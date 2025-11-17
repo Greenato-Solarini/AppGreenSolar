@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
 }
 
 android {
@@ -56,4 +57,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // ROOM: runtime (motor principal)
+    implementation("androidx.room:room-runtime:2.6.1")
+    // ROOM: compatibilidad con corrutinas (Flow, suspend functions)
+    implementation("androidx.room:room-ktx:2.6.1")
+    // ROOM: KAPT para generar el código automáticamente
+    kapt("androidx.room:room-compiler:2.6.1")
+    // Opcional: debug y herramientas de inspección
+    implementation("androidx.sqlite:sqlite:2.4.0")
+
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
 }
