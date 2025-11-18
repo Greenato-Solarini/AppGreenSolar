@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HomeScreen(
     onNavigateToProductos: () -> Unit,
-    onNavigateToCotizacion: () -> Unit
+    onNavigateToCotizacion: () -> Unit,
+    onNavigateToProyectos: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -52,6 +53,10 @@ fun HomeScreen(
 
             Button(onClick = onNavigateToCotizacion) {
                 Text("Calcular cotización solar")
+            }
+
+            Button(onClick = onNavigateToProyectos) {
+                Text("Ver proyectos solares")
             }
         }
     }

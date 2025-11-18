@@ -6,13 +6,31 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +48,12 @@ fun ProductosScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onNavigateToAdd) {
+            FloatingActionButton(
+                onClick = onNavigateToAdd,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.padding(bottom = 80.dp)
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Agregar producto"
@@ -44,7 +67,6 @@ fun ProductosScreen(
                 .padding(padding)
         ) {
 
-            // ---------- LISTA ----------
             if (productos.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -69,7 +91,6 @@ fun ProductosScreen(
                 }
             }
 
-            // ---------- BOTÓN VOLVER ----------
             Button(
                 onClick = onBack,
                 modifier = Modifier
@@ -91,6 +112,10 @@ fun ProductoItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White, // 👈 BLANCO FORZADO
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Row(
             modifier = Modifier
@@ -99,7 +124,6 @@ fun ProductoItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -112,7 +136,6 @@ fun ProductoItem(
                     )
                 }
             }
-
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Default.Delete,
