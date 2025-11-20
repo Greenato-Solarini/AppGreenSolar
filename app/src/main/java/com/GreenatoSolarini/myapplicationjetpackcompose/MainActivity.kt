@@ -13,20 +13,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.GreenatoSolarini.myapplicationjetpackcompose.data.local.DatabaseProvider
 import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProductoRepository
+import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProyectoRepository
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.cotizaciones.CotizacionScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.home.HomeScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.AddProductScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.ProductosScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.EditarProductoScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.ProductosScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.EditarProyectoScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.NuevoProyectoScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.ProyectoDetailScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.ProyectosScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.NuevoProyectoScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.EditarProyectoScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.theme.MyApplicationJetpackComposeTheme
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.CotizacionViewModel
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModelFactory
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
+import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModelFactory
 
 class MainActivity : ComponentActivity() {
 
@@ -39,18 +41,22 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-                // -------- ROOM (Productos) --------
+                // -------- ROOM (Base de datos) --------
                 val context = LocalContext.current
                 val db = DatabaseProvider.getDatabase(context)
-                val repository = ProductoRepository(db.productoDao())
+
+                // -------- Repositorios --------
+                val productoRepository = ProductoRepository(db.productoDao())
+                val proyectoRepository = ProyectoRepository(db.proyectoDao())
+
+                // -------- ViewModels --------
                 val productosViewModel: ProductosViewModel =
-                    viewModel(factory = ProductosViewModelFactory(repository))
+                    viewModel(factory = ProductosViewModelFactory(productoRepository))
 
-                // -------- Cotización --------
+                val proyectosViewModel: ProyectosViewModel =
+                    viewModel(factory = ProyectosViewModelFactory(proyectoRepository))
+
                 val cotizacionViewModel: CotizacionViewModel = viewModel()
-
-                // -------- Proyectos --------
-                val proyectosViewModel: ProyectosViewModel = viewModel()
 
                 AppNavGraph(
                     navController = navController,
@@ -117,15 +123,6 @@ fun AppNavGraph(
             }
         }
 
-
-
-        composable("addProducto") {
-            AddProductScreen(
-                viewModel = productosViewModel,
-                onBack = { navController.popBackStack() }
-            )
-        }
-
         // ---------- COTIZACIÓN ----------
         composable("cotizacion") {
             CotizacionScreen(
@@ -134,7 +131,7 @@ fun AppNavGraph(
             )
         }
 
-// ---------- PROYECTOS ----------
+        // ---------- PROYECTOS ----------
         composable("proyectos") {
             ProyectosScreen(
                 viewModel = proyectosViewModel,
@@ -145,7 +142,7 @@ fun AppNavGraph(
                     navController.navigate("proyectoEditar/$id")
                 },
                 onProyectoDelete = { id ->
-                    proyectosViewModel.eliminarProyecto(id)
+                    proyectosViewModel.eliminarProyectoPorId(id)
                 },
                 onNavigateToNuevo = { navController.navigate("proyectoNuevo") },
                 onBack = { navController.popBackStack() }
@@ -188,8 +185,5 @@ fun AppNavGraph(
                 navController.popBackStack()
             }
         }
-
-
-
     }
 }

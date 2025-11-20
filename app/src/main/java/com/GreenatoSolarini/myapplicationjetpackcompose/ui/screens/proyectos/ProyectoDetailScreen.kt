@@ -3,6 +3,9 @@ package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.os.Build
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -34,12 +37,13 @@ fun ProyectoDetailScreen(
 ) {
     val context = LocalContext.current
 
-    // Estado inicial: intenta leer foto guardada en ViewModel
+    // Cargar foto previa si existe
     var fotoProyecto by remember {
         mutableStateOf<Bitmap?>(viewModel.obtenerFotoProyecto(proyecto.id))
     }
     var permisoDenegado by remember { mutableStateOf(false) }
 
+    // Launcher para cámara
     val takePictureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
@@ -49,6 +53,7 @@ fun ProyectoDetailScreen(
         }
     }
 
+    // Launcher para pedir permiso de cámara
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -60,7 +65,31 @@ fun ProyectoDetailScreen(
         }
     }
 
-    fun manejarClickRecursoNativo() {
+    // Launcher para galería (selector de imágenes)
+    val pickImageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            val bitmap: Bitmap? = try {
+                if (Build.VERSION.SDK_INT < 28) {
+                    @Suppress("DEPRECATION")
+                    MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                } else {
+                    val source = ImageDecoder.createSource(context.contentResolver, uri)
+                    ImageDecoder.decodeBitmap(source)
+                }
+            } catch (e: Exception) {
+                null
+            }
+
+            bitmap?.let {
+                fotoProyecto = it
+                viewModel.guardarFotoProyecto(proyecto.id, it)
+            }
+        }
+    }
+
+    fun manejarClickCamara() {
         val permissionCheck = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.CAMERA
@@ -71,6 +100,11 @@ fun ProyectoDetailScreen(
         } else {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
+    }
+
+    fun manejarClickGaleria() {
+        // Abre el selector de imágenes del sistema (no necesita permisos de almacenamiento)
+        pickImageLauncher.launch("image/*")
     }
 
     Scaffold(
@@ -88,7 +122,7 @@ fun ProyectoDetailScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            // DATOS DEL PROYECTO (sin porcentaje)
+            // DATOS DEL PROYECTO
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -132,12 +166,19 @@ fun ProyectoDetailScreen(
                 }
             }
 
-            // CÁMARA
+            // BOTONES RECURSOS NATIVOS
             Button(
-                onClick = { manejarClickRecursoNativo() },
+                onClick = { manejarClickCamara() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Tomar foto del proyecto")
+                Text("Tomar foto del proyecto (Cámara)")
+            }
+
+            Button(
+                onClick = { manejarClickGaleria() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Elegir foto desde galería")
             }
 
             if (permisoDenegado) {
@@ -150,7 +191,7 @@ fun ProyectoDetailScreen(
 
             fotoProyecto?.let { bitmap ->
                 Text(
-                    text = "Última foto registrada:",
+                    text = "Imagen asociada al proyecto:",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Image(

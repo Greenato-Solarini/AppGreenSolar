@@ -1,13 +1,17 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "proyectos")
 data class ProyectoSolar(
-    val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val nombre: String,
     val cliente: String,
     val direccion: String,
-    val estado: String,          // "En instalación", "Operativo", etc.
-    val avancePorcentaje: Int,   // 0 a 100
-    val produccionActualW: Int,  // W generados ahora (simulado)
-    val consumoActualW: Int,     // W consumidos ahora (simulado)
-    val ahorroHoyClp: Int        // ahorro diario estimado en CLP
+    val estado: String,
+    val produccionActualW: Int = 0,
+    val consumoActualW: Int = 0,
+    val ahorroHoyClp: Int = 0
 )

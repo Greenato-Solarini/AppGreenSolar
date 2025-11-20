@@ -1,49 +1,28 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.repository
 
+import com.GreenatoSolarini.myapplicationjetpackcompose.data.local.ProyectoDao
 import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
-class ProyectoRepository {
+class ProyectoRepository(
+    private val dao: ProyectoDao
+) {
 
-    // Lista de proyectos, parte vacía
-    private val _proyectos = MutableStateFlow<List<ProyectoSolar>>(emptyList())
-    val proyectos: StateFlow<List<ProyectoSolar>> = _proyectos
+    val proyectos: Flow<List<ProyectoSolar>> = dao.getAll()
 
-    private var ultimoId: Int = 0
-
-    fun obtenerProyectoPorId(id: Int): ProyectoSolar? {
-        return _proyectos.value.firstOrNull { it.id == id }
+    suspend fun crearProyecto(proyecto: ProyectoSolar) {
+        dao.insert(proyecto)
     }
 
-    fun crearProyecto(
-        nombre: String,
-        cliente: String,
-        direccion: String,
-        estado: String
-    ) {
-        ultimoId += 1
-        val nuevoProyecto = ProyectoSolar(
-            id = ultimoId,
-            nombre = nombre,
-            cliente = cliente,
-            direccion = direccion,
-            estado = estado,
-            avancePorcentaje = 0,
-            produccionActualW = 0,
-            consumoActualW = 0,
-            ahorroHoyClp = 0
-        )
-        _proyectos.value = _proyectos.value + nuevoProyecto
+    suspend fun actualizarProyecto(proyecto: ProyectoSolar) {
+        dao.update(proyecto)
     }
 
-    fun actualizarProyecto(proyectoActualizado: ProyectoSolar) {
-        _proyectos.value = _proyectos.value.map { proyecto ->
-            if (proyecto.id == proyectoActualizado.id) proyectoActualizado else proyecto
-        }
+    suspend fun eliminarProyecto(proyecto: ProyectoSolar) {
+        dao.delete(proyecto)
     }
 
-    fun eliminarProyecto(id: Int) {
-        _proyectos.value = _proyectos.value.filterNot { it.id == id }
+    suspend fun obtenerPorId(id: Int): ProyectoSolar? {
+        return dao.getById(id)
     }
 }
