@@ -17,8 +17,11 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.cotizaciones.
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.home.HomeScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.AddProductScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.ProductosScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.EditarProductoScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.ProyectoDetailScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.ProyectosScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.NuevoProyectoScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.EditarProyectoScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.theme.MyApplicationJetpackComposeTheme
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.CotizacionViewModel
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
@@ -85,9 +88,36 @@ fun AppNavGraph(
             ProductosScreen(
                 viewModel = productosViewModel,
                 onNavigateToAdd = { navController.navigate("addProducto") },
+                onNavigateToEdit = { id ->
+                    navController.navigate("productoEditar/$id")
+                },
                 onBack = { navController.popBackStack() }
             )
         }
+
+        composable("addProducto") {
+            AddProductScreen(
+                viewModel = productosViewModel,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable("productoEditar/{id}") { backStackEntry ->
+            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val producto = idParam?.let { productosViewModel.obtenerProductoPorId(it) }
+
+            if (producto != null) {
+                EditarProductoScreen(
+                    producto = producto,
+                    viewModel = productosViewModel,
+                    onBack = { navController.popBackStack() }
+                )
+            } else {
+                navController.popBackStack()
+            }
+        }
+
+
 
         composable("addProducto") {
             AddProductScreen(
@@ -104,18 +134,46 @@ fun AppNavGraph(
             )
         }
 
-        // ---------- PROYECTOS ----------
+// ---------- PROYECTOS ----------
         composable("proyectos") {
             ProyectosScreen(
                 viewModel = proyectosViewModel,
                 onProyectoClick = { id ->
                     navController.navigate("proyectoDetalle/$id")
                 },
+                onProyectoEdit = { id ->
+                    navController.navigate("proyectoEditar/$id")
+                },
+                onProyectoDelete = { id ->
+                    proyectosViewModel.eliminarProyecto(id)
+                },
+                onNavigateToNuevo = { navController.navigate("proyectoNuevo") },
                 onBack = { navController.popBackStack() }
             )
         }
 
-        // Detalle proyecto
+        composable("proyectoNuevo") {
+            NuevoProyectoScreen(
+                viewModel = proyectosViewModel,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable("proyectoEditar/{id}") { backStackEntry ->
+            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val proyecto = idParam?.let { proyectosViewModel.obtenerProyectoPorId(it) }
+
+            if (proyecto != null) {
+                EditarProyectoScreen(
+                    proyecto = proyecto,
+                    viewModel = proyectosViewModel,
+                    onBack = { navController.popBackStack() }
+                )
+            } else {
+                navController.popBackStack()
+            }
+        }
+
         composable("proyectoDetalle/{id}") { backStackEntry ->
             val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
             val proyecto = idParam?.let { proyectosViewModel.obtenerProyectoPorId(it) }
@@ -123,12 +181,15 @@ fun AppNavGraph(
             if (proyecto != null) {
                 ProyectoDetailScreen(
                     proyecto = proyecto,
+                    viewModel = proyectosViewModel,
                     onBack = { navController.popBackStack() }
                 )
             } else {
                 navController.popBackStack()
             }
         }
+
+
 
     }
 }

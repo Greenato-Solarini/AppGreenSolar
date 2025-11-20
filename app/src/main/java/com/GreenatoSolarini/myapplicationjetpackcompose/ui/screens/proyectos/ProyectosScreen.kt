@@ -4,10 +4,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,6 +34,9 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewM
 fun ProyectosScreen(
     viewModel: ProyectosViewModel,
     onProyectoClick: (Int) -> Unit,
+    onProyectoEdit: (Int) -> Unit,
+    onProyectoDelete: (Int) -> Unit,
+    onNavigateToNuevo: () -> Unit,
     onBack: () -> Unit
 ) {
     val proyectos by viewModel.proyectos.collectAsState()
@@ -34,48 +44,56 @@ fun ProyectosScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Proyectos solares") }
-            )
-        }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            if (proyectos.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("No hay proyectos registrados todavía.")
-                }
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                        .padding(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(proyectos) { proyecto ->
-                        ProyectoItem(
-                            proyecto = proyecto,
-                            onClick = { onProyectoClick(proyecto.id) }
+                title = { Text("Proyectos solares") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Volver"
                         )
                     }
                 }
-            }
-
-            Button(
-                onClick = onBack,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onNavigateToNuevo,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.padding(bottom = 8.dp, end = 8.dp)
             ) {
-                Text("Volver")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Nuevo proyecto"
+                )
+            }
+        }
+    ) { padding ->
+        if (proyectos.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("No hay proyectos registrados todavía.")
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(proyectos) { proyecto ->
+                    ProyectoItem(
+                        proyecto = proyecto,
+                        onClick = { onProyectoClick(proyecto.id) },
+                        onEdit = { onProyectoEdit(proyecto.id) },
+                        onDelete = { onProyectoDelete(proyecto.id) }
+                    )
+                }
             }
         }
     }
@@ -84,28 +102,49 @@ fun ProyectosScreen(
 @Composable
 fun ProyectoItem(
     proyecto: ProyectoSolar,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 8.dp),
+            .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
             contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = proyecto.nombre, style = MaterialTheme.typography.titleMedium)
-            Text(text = "Cliente: ${proyecto.cliente}")
-            Text(text = "Estado: ${proyecto.estado}")
-            Text(text = "Avance: ${proyecto.avancePorcentaje}%")
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(text = proyecto.nombre, style = MaterialTheme.typography.titleMedium)
+                Text(text = "Cliente: ${proyecto.cliente}")
+                Text(text = "Estado: ${proyecto.estado}")
+            }
+
+            Row {
+                IconButton(onClick = onEdit) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Editar proyecto"
+                    )
+                }
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Eliminar proyecto"
+                    )
+                }
+            }
         }
     }
 }

@@ -10,6 +10,5 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun productoDao(): ProductoDao
 }

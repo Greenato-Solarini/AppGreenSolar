@@ -67,6 +67,7 @@ fun AddProductScreen(
                 )
             }
 
+            // Botón GUARDAR
             Button(
                 onClick = {
                     val precio = precioText.toIntOrNull()
@@ -84,6 +85,14 @@ fun AddProductScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Guardar producto")
+            }
+
+            // Botón CANCELAR
+            OutlinedButton(
+                onClick = { onBack() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Cancelar")
             }
         }
     }

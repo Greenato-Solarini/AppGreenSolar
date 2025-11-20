@@ -11,7 +11,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,29 +23,32 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProyectoDetailScreen(
     proyecto: ProyectoSolar,
+    viewModel: ProyectosViewModel,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
 
-    // Estado para almacenar la foto tomada
-    var fotoProyecto by remember { mutableStateOf<Bitmap?>(null) }
+    // Estado inicial: intenta leer foto guardada en ViewModel
+    var fotoProyecto by remember {
+        mutableStateOf<Bitmap?>(viewModel.obtenerFotoProyecto(proyecto.id))
+    }
     var permisoDenegado by remember { mutableStateOf(false) }
 
-    // Launcher para tomar la foto (preview en Bitmap)
     val takePictureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
         if (bitmap != null) {
             fotoProyecto = bitmap
+            viewModel.guardarFotoProyecto(proyecto.id, bitmap)
         }
     }
 
-    // Launcher para pedir permiso de cámara
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -56,7 +58,6 @@ fun ProyectoDetailScreen(
         } else {
             permisoDenegado = true
         }
-
     }
 
     fun manejarClickRecursoNativo() {
@@ -66,13 +67,10 @@ fun ProyectoDetailScreen(
         )
 
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            // Ya tiene permiso → abrir cámara
             takePictureLauncher.launch(null)
         } else {
-            // Pedir permiso
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
-
     }
 
     Scaffold(
@@ -90,7 +88,7 @@ fun ProyectoDetailScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            // -------- DATOS DEL PROYECTO --------
+            // DATOS DEL PROYECTO (sin porcentaje)
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -107,21 +105,10 @@ fun ProyectoDetailScreen(
                     Text("Cliente: ${proyecto.cliente}", style = MaterialTheme.typography.bodyLarge)
                     Text("Dirección: ${proyecto.direccion}", style = MaterialTheme.typography.bodyMedium)
                     Text("Estado: ${proyecto.estado}", style = MaterialTheme.typography.bodyMedium)
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text("Avance de instalación:", style = MaterialTheme.typography.bodyMedium)
-                    LinearProgressIndicator(
-                        progress = (proyecto.avancePorcentaje / 100f),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 4.dp)
-                    )
-                    Text("${proyecto.avancePorcentaje} % completado")
                 }
             }
 
-            // -------- MONITOREO --------
+            // MONITOREO
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -145,7 +132,7 @@ fun ProyectoDetailScreen(
                 }
             }
 
-            // -------- RECURSO NATIVO: CÁMARA --------
+            // CÁMARA
             Button(
                 onClick = { manejarClickRecursoNativo() },
                 modifier = Modifier.fillMaxWidth()

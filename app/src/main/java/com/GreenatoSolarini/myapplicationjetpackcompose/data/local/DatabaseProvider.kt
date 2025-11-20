@@ -10,16 +10,14 @@ object DatabaseProvider {
 
     fun getDatabase(context: Context): AppDatabase {
         return INSTANCE ?: synchronized(this) {
-            val instance = Room.databaseBuilder(
+            Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
-                "greensolar_local_db"
+                "greensolar_db"
             )
-                .fallbackToDestructiveMigration()
+                .fallbackToDestructiveMigration() // para no complicarnos con migraciones ahora
                 .build()
-
-            INSTANCE = instance
-            instance
+                .also { INSTANCE = it }
         }
     }
 }

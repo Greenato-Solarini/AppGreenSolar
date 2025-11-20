@@ -30,6 +30,17 @@ class ProductosViewModel(
         }
     }
 
+    fun obtenerProductoPorId(id: Int): Producto? {
+        // Tomamos el producto desde el StateFlow actual
+        return productos.value.firstOrNull { it.id == id }
+    }
+
+    fun actualizarProducto(producto: Producto) {
+        viewModelScope.launch {
+            repository.actualizarProducto(producto)
+        }
+    }
+
     fun eliminarProducto(producto: Producto) {
         viewModelScope.launch {
             repository.eliminar(producto)

@@ -21,4 +21,8 @@ class ProductoRepository(
     suspend fun obtenerPorId(id: Int): Producto? {
         return dao.getById(id)
     }
+
+    suspend fun actualizarProducto(producto: Producto) {
+        dao.update(producto)
+    }
 }

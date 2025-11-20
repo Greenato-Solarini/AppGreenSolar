@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,21 +23,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductosScreen(
     viewModel: ProductosViewModel,
     onNavigateToAdd: () -> Unit,
+    onNavigateToEdit: (Int) -> Unit,
     onBack: () -> Unit
 ) {
     val productos by viewModel.productos.collectAsState()
@@ -85,6 +82,7 @@ fun ProductosScreen(
                     items(productos) { producto ->
                         ProductoItem(
                             producto = producto,
+                            onEdit = { onNavigateToEdit(producto.id) },
                             onDelete = { viewModel.eliminarProducto(producto) }
                         )
                     }
@@ -106,6 +104,7 @@ fun ProductosScreen(
 @Composable
 fun ProductoItem(
     producto: Producto,
+    onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
     Card(
@@ -113,7 +112,7 @@ fun ProductoItem(
             .fillMaxWidth()
             .padding(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White, // 👈 BLANCO FORZADO
+            containerColor = Color.White,
             contentColor = MaterialTheme.colorScheme.onSurface
         )
     ) {
@@ -136,11 +135,19 @@ fun ProductoItem(
                     )
                 }
             }
-            IconButton(onClick = onDelete) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Eliminar"
-                )
+            Row {
+                IconButton(onClick = onEdit) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Editar producto"
+                    )
+                }
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Eliminar"
+                    )
+                }
             }
         }
     }

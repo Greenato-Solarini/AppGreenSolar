@@ -6,37 +6,44 @@ import kotlinx.coroutines.flow.StateFlow
 
 class ProyectoRepository {
 
-    // Lista simulada de proyectos solares (mock)
-    private val _proyectos = MutableStateFlow(
-        listOf(
-            ProyectoSolar(
-                id = 1,
-                nombre = "Casa Lota",
-                cliente = "María Pérez",
-                direccion = "Concepcion, Región del Biobío",
-                estado = "En instalación",
-                avancePorcentaje = 45,
-                produccionActualW = 780,
-                consumoActualW = 640,
-                ahorroHoyClp = 910
-            ),
-            ProyectoSolar(
-                id = 2,
-                nombre = "Panadería Sol Naciente",
-                cliente = "Panadería Sol Naciente",
-                direccion = "Santiago, Región Metropolitana",
-                estado = "Operativo",
-                avancePorcentaje = 100,
-                produccionActualW = 3200,
-                consumoActualW = 2800,
-                ahorroHoyClp = 5630
-            )
-        )
-    )
-
+    // Lista de proyectos, parte vacía
+    private val _proyectos = MutableStateFlow<List<ProyectoSolar>>(emptyList())
     val proyectos: StateFlow<List<ProyectoSolar>> = _proyectos
+
+    private var ultimoId: Int = 0
 
     fun obtenerProyectoPorId(id: Int): ProyectoSolar? {
         return _proyectos.value.firstOrNull { it.id == id }
+    }
+
+    fun crearProyecto(
+        nombre: String,
+        cliente: String,
+        direccion: String,
+        estado: String
+    ) {
+        ultimoId += 1
+        val nuevoProyecto = ProyectoSolar(
+            id = ultimoId,
+            nombre = nombre,
+            cliente = cliente,
+            direccion = direccion,
+            estado = estado,
+            avancePorcentaje = 0,
+            produccionActualW = 0,
+            consumoActualW = 0,
+            ahorroHoyClp = 0
+        )
+        _proyectos.value = _proyectos.value + nuevoProyecto
+    }
+
+    fun actualizarProyecto(proyectoActualizado: ProyectoSolar) {
+        _proyectos.value = _proyectos.value.map { proyecto ->
+            if (proyecto.id == proyectoActualizado.id) proyectoActualizado else proyecto
+        }
+    }
+
+    fun eliminarProyecto(id: Int) {
+        _proyectos.value = _proyectos.value.filterNot { it.id == id }
     }
 }
