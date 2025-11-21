@@ -25,7 +25,8 @@ class ClientesViewModel(
         nombre: String,
         email: String,
         telefono: String,
-        direccion: String
+        direccion: String,
+        comuna: String
     ) {
         viewModelScope.launch {
             repository.insertar(
@@ -34,7 +35,8 @@ class ClientesViewModel(
                     nombre = nombre,
                     email = email,
                     telefono = telefono,
-                    direccion = direccion
+                    direccion = direccion,
+                    comuna = comuna
                 )
             )
         }

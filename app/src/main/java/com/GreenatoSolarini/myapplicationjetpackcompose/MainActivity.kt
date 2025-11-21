@@ -255,7 +255,7 @@ fun AppNavGraph(
 
             if (cliente != null) {
                 EditarClienteScreen(
-                    cliente = cliente,
+                    clienteInicial = cliente,
                     viewModel = clientesViewModel,
                     onBack = { navController.popBackStack() }
                 )
