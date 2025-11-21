@@ -1,12 +1,11 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
@@ -33,10 +32,9 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ClientesViewMo
 @Composable
 fun ClientesScreen(
     viewModel: ClientesViewModel,
+    onNavigateToNuevo: () -> Unit,
     onClienteClick: (Int) -> Unit,
     onClienteEdit: (Int) -> Unit,
-    onClienteDelete: (Int) -> Unit,
-    onNavigateToNuevo: () -> Unit,
     onBack: () -> Unit
 ) {
     val clientes by viewModel.clientes.collectAsState()
@@ -48,7 +46,7 @@ fun ClientesScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver"
                         )
                     }
@@ -63,7 +61,7 @@ fun ClientesScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar cliente"
+                    contentDescription = "Nuevo cliente"
                 )
             }
         }
@@ -94,7 +92,7 @@ fun ClientesScreen(
                             cliente = cliente,
                             onClick = { onClienteClick(cliente.id) },
                             onEdit = { onClienteEdit(cliente.id) },
-                            onDelete = { onClienteDelete(cliente.id) }
+                            onDelete = { viewModel.eliminarCliente(cliente) }
                         )
                     }
                 }
@@ -113,35 +111,34 @@ fun ClienteItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { onClick() },
+            .padding(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
             contentColor = MaterialTheme.colorScheme.onSurface
-        )
+        ),
+        onClick = onClick
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Column(
-                modifier = Modifier.weight(1f)
+            Text(
+                text = cliente.nombre,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(text = "Email: ${cliente.email}")
+            Text(text = "Teléfono: ${cliente.telefono}")
+            Text(text = "Dirección: ${cliente.direccion}")
+            Text(text = "Comuna: ${cliente.comuna}")
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(text = cliente.nombre, style = MaterialTheme.typography.titleMedium)
-                if (cliente.email.isNotBlank()) {
-                    Text(text = "Email: ${cliente.email}", style = MaterialTheme.typography.bodySmall)
-                }
-                if (cliente.telefono.isNotBlank()) {
-                    Text(text = "Teléfono: ${cliente.telefono}", style = MaterialTheme.typography.bodySmall)
-                }
-                if (cliente.direccion.isNotBlank()) {
-                    Text(text = "Dirección: ${cliente.direccion}", style = MaterialTheme.typography.bodySmall)
-                }
-            }
-            Row {
                 IconButton(onClick = onEdit) {
                     Icon(
                         imageVector = Icons.Default.Edit,

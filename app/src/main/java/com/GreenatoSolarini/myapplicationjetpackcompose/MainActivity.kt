@@ -30,13 +30,7 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.Nue
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.ProyectoDetailScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.ProyectosScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.theme.MyApplicationJetpackComposeTheme
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModelFactory
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.CotizacionViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModelFactory
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModelFactory
+import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.*
 
 class MainActivity : ComponentActivity() {
 
@@ -48,8 +42,6 @@ class MainActivity : ComponentActivity() {
             MyApplicationJetpackComposeTheme {
 
                 val navController = rememberNavController()
-
-                // -------- ROOM (Base de datos) --------
                 val context = LocalContext.current
                 val db = DatabaseProvider.getDatabase(context)
 
@@ -104,20 +96,64 @@ fun AppNavGraph(
             )
         }
 
+        // ---------- CLIENTES ----------
+        composable("clientes") {
+            ClientesScreen(
+                viewModel = clientesViewModel,
+                onNavigateToNuevo = { navController.navigate("clienteNuevo") },
+                onClienteClick = { id -> navController.navigate("clienteDetalle/$id") },
+                onClienteEdit = { id -> navController.navigate("clienteEditar/$id") },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable("clienteNuevo") {
+            NuevoClienteScreen(
+                viewModel = clientesViewModel,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable("clienteEditar/{id}") { backStackEntry ->
+            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val cliente = idParam?.let { clientesViewModel.obtenerClientePorId(it) }
+
+            if (cliente != null) {
+                EditarClienteScreen(
+                    clienteInicial = cliente,
+                    viewModel = clientesViewModel,
+                    onBack = { navController.popBackStack() }
+                )
+            } else {
+                navController.popBackStack()
+            }
+        }
+
+        composable("clienteDetalle/{id}") { backStackEntry ->
+            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val cliente = idParam?.let { clientesViewModel.obtenerClientePorId(it) }
+
+            if (cliente != null) {
+                ClienteDetailScreen(
+                    cliente = cliente,
+                    onBack = { navController.popBackStack() }
+                )
+            } else {
+                navController.popBackStack()
+            }
+        }
+
         // ---------- PRODUCTOS ----------
         composable("productos") {
             ProductosScreen(
                 viewModel = productosViewModel,
                 onNavigateToAdd = { navController.navigate("addProducto") },
-                onNavigateToEdit = { id ->
-                    navController.navigate("productoEditar/$id")
-                },
-                onNavigateToDetail = { id ->
-                    navController.navigate("productoDetalle/$id")
-                },
+                onNavigateToEdit = { id -> navController.navigate("productoEditar/$id") },
+                onNavigateToDetail = { id -> navController.navigate("productoDetalle/$id") },
                 onBack = { navController.popBackStack() }
             )
         }
+
 
         composable("addProducto") {
             AddProductScreen(
@@ -168,15 +204,10 @@ fun AppNavGraph(
         composable("proyectos") {
             ProyectosScreen(
                 viewModel = proyectosViewModel,
-                onProyectoClick = { id ->
-                    navController.navigate("proyectoDetalle/$id")
-                },
-                onProyectoEdit = { id ->
-                    navController.navigate("proyectoEditar/$id")
-                },
-                onProyectoDelete = { id ->
-                    proyectosViewModel.eliminarProyectoPorId(id)
-                },
+                clientesViewModel = clientesViewModel,
+                onProyectoClick = { id -> navController.navigate("proyectoDetalle/$id") },
+                onProyectoEdit = { id -> navController.navigate("proyectoEditar/$id") },
+                onProyectoDelete = { id -> proyectosViewModel.eliminarProyectoPorId(id) },
                 onNavigateToNuevo = { navController.navigate("proyectoNuevo") },
                 onBack = { navController.popBackStack() }
             )
@@ -184,12 +215,11 @@ fun AppNavGraph(
 
         composable("proyectoNuevo") {
             NuevoProyectoScreen(
-                proyectosViewModel = proyectosViewModel,
+                viewModel = proyectosViewModel,
                 clientesViewModel = clientesViewModel,
                 onBack = { navController.popBackStack() }
             )
         }
-
 
         composable("proyectoEditar/{id}") { backStackEntry ->
             val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
@@ -211,66 +241,14 @@ fun AppNavGraph(
             val proyecto = idParam?.let { proyectosViewModel.obtenerProyectoPorId(it) }
 
             if (proyecto != null) {
+                val clienteNombre = clientesViewModel
+                    .obtenerClientePorId(proyecto.clienteId)
+                    ?.nombre ?: "Cliente no encontrado"
+
                 ProyectoDetailScreen(
                     proyecto = proyecto,
+                    clienteNombre = clienteNombre,
                     viewModel = proyectosViewModel,
-                    onBack = { navController.popBackStack() }
-                )
-            } else {
-                navController.popBackStack()
-            }
-        }
-
-        // ---------- CLIENTES ----------
-        composable("clientes") {
-            ClientesScreen(
-                viewModel = clientesViewModel,
-                onClienteClick = { id ->
-                    navController.navigate("clienteDetalle/$id")
-                },
-                onClienteEdit = { id ->
-                    navController.navigate("clienteEditar/$id")
-                },
-                onClienteDelete = { id ->
-                    val cliente = clientesViewModel.obtenerClientePorId(id)
-                    if (cliente != null) {
-                        clientesViewModel.eliminarCliente(cliente)
-                    }
-                },
-                onNavigateToNuevo = { navController.navigate("clienteNuevo") },
-                onBack = { navController.popBackStack() }
-            )
-        }
-
-        composable("clienteNuevo") {
-            NuevoClienteScreen(
-                viewModel = clientesViewModel,
-                onBack = { navController.popBackStack() }
-            )
-        }
-
-        composable("clienteEditar/{id}") { backStackEntry ->
-            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            val cliente = idParam?.let { clientesViewModel.obtenerClientePorId(it) }
-
-            if (cliente != null) {
-                EditarClienteScreen(
-                    clienteInicial = cliente,
-                    viewModel = clientesViewModel,
-                    onBack = { navController.popBackStack() }
-                )
-            } else {
-                navController.popBackStack()
-            }
-        }
-
-        composable("clienteDetalle/{id}") { backStackEntry ->
-            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            val cliente = idParam?.let { clientesViewModel.obtenerClientePorId(it) }
-
-            if (cliente != null) {
-                ClienteDetailScreen(
-                    cliente = cliente,
                     onBack = { navController.popBackStack() }
                 )
             } else {

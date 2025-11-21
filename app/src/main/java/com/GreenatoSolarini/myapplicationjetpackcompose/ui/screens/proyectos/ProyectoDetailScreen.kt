@@ -1,27 +1,25 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.os.Build
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
 
@@ -29,12 +27,75 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewM
 @Composable
 fun ProyectoDetailScreen(
     proyecto: ProyectoSolar,
+    clienteNombre: String,
     viewModel: ProyectosViewModel,
     onBack: () -> Unit
 ) {
-    // Solo leemos la foto guardada (si existe)
+    val context = LocalContext.current
+
     var fotoProyecto by remember {
-        mutableStateOf(viewModel.obtenerFotoProyecto(proyecto.id))
+        mutableStateOf<Bitmap?>(viewModel.obtenerFotoProyecto(proyecto.id))
+    }
+    var permisoDenegado by remember { mutableStateOf(false) }
+
+    val takePictureLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview()
+    ) { bitmap ->
+        if (bitmap != null) {
+            fotoProyecto = bitmap
+            viewModel.guardarFotoProyecto(proyecto.id, bitmap)
+        }
+    }
+
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            permisoDenegado = false
+            takePictureLauncher.launch(null)
+        } else {
+            permisoDenegado = true
+        }
+    }
+
+    val pickImageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            val bitmap: Bitmap? = try {
+                if (Build.VERSION.SDK_INT < 28) {
+                    @Suppress("DEPRECATION")
+                    MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                } else {
+                    val source = ImageDecoder.createSource(context.contentResolver, uri)
+                    ImageDecoder.decodeBitmap(source)
+                }
+            } catch (e: Exception) {
+                null
+            }
+
+            bitmap?.let {
+                fotoProyecto = it
+                viewModel.guardarFotoProyecto(proyecto.id, it)
+            }
+        }
+    }
+
+    fun manejarClickCamara() {
+        val permissionCheck = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.CAMERA
+        )
+
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            takePictureLauncher.launch(null)
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    fun manejarClickGaleria() {
+        pickImageLauncher.launch("image/*")
     }
 
     Scaffold(
@@ -44,7 +105,7 @@ fun ProyectoDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver"
                         )
                     }
@@ -74,7 +135,7 @@ fun ProyectoDetailScreen(
                         .padding(12.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text("Cliente: ${proyecto.cliente}", style = MaterialTheme.typography.bodyLarge)
+                    Text("Cliente: $clienteNombre", style = MaterialTheme.typography.bodyLarge)
                     Text("Dirección: ${proyecto.direccion}", style = MaterialTheme.typography.bodyMedium)
                     Text("Estado: ${proyecto.estado}", style = MaterialTheme.typography.bodyMedium)
                 }
@@ -104,11 +165,32 @@ fun ProyectoDetailScreen(
                 }
             }
 
-            // FOTO SOLO LECTURA
+            Button(
+                onClick = { manejarClickCamara() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Tomar foto del proyecto (Cámara)")
+            }
+
+            Button(
+                onClick = { manejarClickGaleria() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Elegir foto desde galería")
+            }
+
+            if (permisoDenegado) {
+                Text(
+                    text = "Permiso de cámara denegado. Actívalo en ajustes para usar esta función.",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
             fotoProyecto?.let { bitmap ->
                 Text(
                     text = "Imagen asociada al proyecto:",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Image(
                     bitmap = bitmap.asImageBitmap(),

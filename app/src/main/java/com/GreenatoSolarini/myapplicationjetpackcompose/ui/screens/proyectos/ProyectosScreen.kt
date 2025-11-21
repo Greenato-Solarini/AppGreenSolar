@@ -1,24 +1,14 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,12 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProyectosScreen(
     viewModel: ProyectosViewModel,
+    clientesViewModel: ClientesViewModel,
     onProyectoClick: (Int) -> Unit,
     onProyectoEdit: (Int) -> Unit,
     onProyectoDelete: (Int) -> Unit,
@@ -40,6 +32,7 @@ fun ProyectosScreen(
     onBack: () -> Unit
 ) {
     val proyectos by viewModel.proyectos.collectAsState()
+    val clientes by clientesViewModel.clientes.collectAsState()
 
     Scaffold(
         topBar = {
@@ -48,7 +41,7 @@ fun ProyectosScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver"
                         )
                     }
@@ -59,8 +52,7 @@ fun ProyectosScreen(
             FloatingActionButton(
                 onClick = onNavigateToNuevo,
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.padding(bottom = 8.dp, end = 8.dp)
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -69,30 +61,40 @@ fun ProyectosScreen(
             }
         }
     ) { padding ->
-        if (proyectos.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("No hay proyectos registrados todavía.")
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(proyectos) { proyecto ->
-                    ProyectoItem(
-                        proyecto = proyecto,
-                        onClick = { onProyectoClick(proyecto.id) },
-                        onEdit = { onProyectoEdit(proyecto.id) },
-                        onDelete = { onProyectoDelete(proyecto.id) }
-                    )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+
+            if (proyectos.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("No hay proyectos registrados todavía.")
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ) {
+                    items(proyectos) { proyecto ->
+                        val clienteNombre = clientes
+                            .firstOrNull { it.id == proyecto.clienteId }
+                            ?.nombre ?: "Cliente no encontrado"
+
+                        ProyectoItem(
+                            proyecto = proyecto,
+                            clienteNombre = clienteNombre,
+                            onClick = { onProyectoClick(proyecto.id) },
+                            onEdit = { onProyectoEdit(proyecto.id) },
+                            onDelete = { onProyectoDelete(proyecto.id) }
+                        )
+                    }
                 }
             }
         }
@@ -102,6 +104,7 @@ fun ProyectosScreen(
 @Composable
 fun ProyectoItem(
     proyecto: ProyectoSolar,
+    clienteNombre: String,
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
@@ -109,29 +112,30 @@ fun ProyectoItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .padding(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
             contentColor = MaterialTheme.colorScheme.onSurface
-        )
+        ),
+        onClick = onClick
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
+            Text(text = proyecto.nombre, style = MaterialTheme.typography.titleMedium)
+            Text(text = "Cliente: $clienteNombre")
+            Text(text = "Dirección: ${proyecto.direccion}")
+            Text(text = "Estado: ${proyecto.estado}")
 
-            Column(
-                modifier = Modifier.weight(1f)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(text = proyecto.nombre, style = MaterialTheme.typography.titleMedium)
-                Text(text = "Cliente: ${proyecto.cliente}")
-                Text(text = "Estado: ${proyecto.estado}")
-            }
-
-            Row {
                 IconButton(onClick = onEdit) {
                     Icon(
                         imageVector = Icons.Default.Edit,

@@ -1,9 +1,8 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,22 +15,21 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewM
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NuevoProyectoScreen(
-    proyectosViewModel: ProyectosViewModel,
+    viewModel: ProyectosViewModel,
     clientesViewModel: ClientesViewModel,
     onBack: () -> Unit
 ) {
+    val clientes by clientesViewModel.clientes.collectAsState()
+
     var nombreProyecto by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
     var estado by remember { mutableStateOf("En evaluación") }
 
-    // 🔹 Clientes disponibles
-    val clientes by clientesViewModel.clientes.collectAsState()
-
-    // 🔹 Cliente seleccionado
     var clienteSeleccionado by remember { mutableStateOf<Cliente?>(null) }
     var expanded by remember { mutableStateOf(false) }
 
     var showError by remember { mutableStateOf(false) }
+    var clienteError by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         topBar = {
@@ -39,7 +37,10 @@ fun NuevoProyectoScreen(
                 title = { Text("Nuevo proyecto solar") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Volver"
+                        )
                     }
                 }
             )
@@ -53,22 +54,6 @@ fun NuevoProyectoScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            // 🔥 Si no hay clientes no puede crear proyectos
-            if (clientes.isEmpty()) {
-                Text(
-                    "Primero debes registrar clientes antes de crear proyectos.",
-                    color = MaterialTheme.colorScheme.error
-                )
-
-                Button(
-                    onClick = onBack,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Volver")
-                }
-                return@Column
-            }
-
             OutlinedTextField(
                 value = nombreProyecto,
                 onValueChange = {
@@ -79,38 +64,52 @@ fun NuevoProyectoScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // -------------------------------
-            //         DROPDOWN CLIENTES
-            // -------------------------------
-            Column {
-                Text("Cliente", style = MaterialTheme.typography.bodyMedium)
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { expanded = true }
-                        .padding(vertical = 8.dp)
+            // -------- SELECCIÓN DE CLIENTE --------
+            if (clientes.isEmpty()) {
+                Text(
+                    text = "No hay clientes registrados. Primero crea un cliente en el módulo Clientes.",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            } else {
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded }
                 ) {
-                    Text(
-                        text = clienteSeleccionado?.nombre ?: "Seleccionar cliente...",
-                        style = MaterialTheme.typography.bodyLarge
+                    OutlinedTextField(
+                        value = clienteSeleccionado?.nombre ?: "",
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Cliente") },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth(),
+                        isError = clienteError != null
                     )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        clientes.forEach { cliente ->
+                            DropdownMenuItem(
+                                text = { Text(cliente.nombre) },
+                                onClick = {
+                                    clienteSeleccionado = cliente
+                                    clienteError = null
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
                 }
 
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
-                ) {
-                    clientes.forEach { cliente ->
-                        DropdownMenuItem(
-                            text = { Text(cliente.nombre) },
-                            onClick = {
-                                clienteSeleccionado = cliente
-                                expanded = false
-                                showError = false
-                            }
-                        )
-                    }
+                clienteError?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
 
@@ -133,41 +132,47 @@ fun NuevoProyectoScreen(
 
             if (showError) {
                 Text(
-                    text = "Completa todos los campos y selecciona un cliente.",
-                    color = MaterialTheme.colorScheme.error
+                    text = "Completa nombre, cliente y dirección.",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 onClick = {
-                    if (
-                        nombreProyecto.isBlank() ||
-                        direccion.isBlank() ||
-                        clienteSeleccionado == null
-                    ) {
+                    var hayError = false
+
+                    if (nombreProyecto.isBlank() || direccion.isBlank()) {
                         showError = true
-                        return@Button
+                        hayError = true
                     }
 
-                    // Crear el proyecto con tu estructura correcta
-                    val nuevoProyecto = ProyectoSolar(
-                        id = 0,
-                        nombre = nombreProyecto,
-                        cliente = clienteSeleccionado!!.nombre,
-                        direccion = direccion,
-                        estado = estado.ifBlank { "En evaluación" },
-                        produccionActualW = 0,
-                        consumoActualW = 0,
-                        ahorroHoyClp = 0,
-                        foto = null // foto se agregará luego en editar
-                    )
+                    if (clienteSeleccionado == null) {
+                        clienteError = "Debes seleccionar un cliente."
+                        hayError = true
+                    }
 
-                    proyectosViewModel.agregarProyecto(nuevoProyecto)
-                    onBack()
+                    if (!hayError && clienteSeleccionado != null) {
+                        val nuevoProyecto = ProyectoSolar(
+                            id = 0,
+                            nombre = nombreProyecto,
+                            clienteId = clienteSeleccionado!!.id,
+                            direccion = direccion,
+                            estado = estado.ifBlank { "En evaluación" },
+                            produccionActualW = 0,
+                            consumoActualW = 0,
+                            ahorroHoyClp = 0,
+                            foto = null
+                        )
+
+                        viewModel.agregarProyecto(nuevoProyecto)
+                        onBack()
+                    }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = clientes.isNotEmpty()
             ) {
                 Text("Guardar proyecto")
             }

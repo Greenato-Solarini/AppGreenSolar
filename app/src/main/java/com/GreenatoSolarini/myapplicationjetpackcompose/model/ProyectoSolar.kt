@@ -7,12 +7,11 @@ import androidx.room.PrimaryKey
 data class ProyectoSolar(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val nombre: String,
-    val cliente: String,
+    val clienteId: Int,   // 👉 ahora guardamos el ID del cliente
     val direccion: String,
     val estado: String,
     val produccionActualW: Int,
     val consumoActualW: Int,
     val ahorroHoyClp: Int,
-    // Nueva columna para la foto del proyecto
     val foto: ByteArray? = null
 )

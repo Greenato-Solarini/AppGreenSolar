@@ -21,15 +21,7 @@ class ProyectosViewModel(
         initialValue = emptyList()
     )
 
-    private fun bitmapToBytes(bitmap: Bitmap): ByteArray {
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-        return stream.toByteArray()
-    }
-
-    private fun bytesToBitmap(bytes: ByteArray): Bitmap {
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-    }
+    // ---------- CRUD PROYECTOS ----------
 
     fun agregarProyecto(proyecto: ProyectoSolar) {
         viewModelScope.launch {
@@ -53,20 +45,28 @@ class ProyectosViewModel(
         return proyectos.value.firstOrNull { it.id == id }
     }
 
-    // -------- PERSISTENCIA DE FOTO --------
+    // ---------- FOTO (CÁMARA / GALERÍA) ----------
 
-    fun guardarFotoProyecto(id: Int, bitmap: Bitmap) {
+    fun guardarFotoProyecto(proyectoId: Int, bitmap: Bitmap) {
         viewModelScope.launch {
-            val proyectoActual = repository.obtenerPorId(id) ?: return@launch
-            val bytes = bitmapToBytes(bitmap)
-            val actualizado = proyectoActual.copy(foto = bytes)
-            repository.actualizar(actualizado)
+            val proyecto = obtenerProyectoPorId(proyectoId)
+            if (proyecto != null) {
+                val bytes = bitmapToByteArray(bitmap)
+                val actualizado = proyecto.copy(foto = bytes)
+                repository.actualizar(actualizado)
+            }
         }
     }
 
-    fun obtenerFotoProyecto(id: Int): Bitmap? {
-        val proyecto = proyectos.value.firstOrNull { it.id == id } ?: return null
-        val bytes = proyecto.foto ?: return null
-        return bytesToBitmap(bytes)
+    fun obtenerFotoProyecto(proyectoId: Int): Bitmap? {
+        val proyecto = obtenerProyectoPorId(proyectoId)
+        val data = proyecto?.foto ?: return null
+        return BitmapFactory.decodeByteArray(data, 0, data.size)
+    }
+
+    private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        return stream.toByteArray()
     }
 }
