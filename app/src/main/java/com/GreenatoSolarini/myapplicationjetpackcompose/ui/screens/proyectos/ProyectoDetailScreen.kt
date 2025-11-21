@@ -137,9 +137,11 @@ fun ProyectoDetailScreen(
                 ) {
                     Text("Cliente: $clienteNombre", style = MaterialTheme.typography.bodyLarge)
                     Text("Dirección: ${proyecto.direccion}", style = MaterialTheme.typography.bodyMedium)
+                    Text("Comuna: ${proyecto.comuna}", style = MaterialTheme.typography.bodyMedium) // 👈 NUEVO
                     Text("Estado: ${proyecto.estado}", style = MaterialTheme.typography.bodyMedium)
                 }
             }
+
 
             // MONITOREO
             Card(

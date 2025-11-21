@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey
 data class ProyectoSolar(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val nombre: String,
-    val clienteId: Int,   // 👉 ahora guardamos el ID del cliente
+    val clienteId: Int,
     val direccion: String,
+    val comuna: String,               // 👈 NUEVO CAMPO
     val estado: String,
     val produccionActualW: Int,
     val consumoActualW: Int,

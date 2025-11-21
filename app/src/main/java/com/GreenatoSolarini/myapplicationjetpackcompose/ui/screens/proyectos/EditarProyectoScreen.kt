@@ -1,28 +1,10 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
@@ -37,6 +19,7 @@ fun EditarProyectoScreen(
 ) {
     var nombreProyecto by remember { mutableStateOf(proyecto.nombre) }
     var direccion by remember { mutableStateOf(proyecto.direccion) }
+    var comuna by remember { mutableStateOf(proyecto.comuna) }   // 👈 NUEVO
     var estado by remember { mutableStateOf(proyecto.estado) }
 
     var produccionText by remember { mutableStateOf(proyecto.produccionActualW.toString()) }
@@ -84,7 +67,17 @@ fun EditarProyectoScreen(
                     direccion = it
                     showError = false
                 },
-                label = { Text("Dirección / Comuna") },
+                label = { Text("Dirección") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = comuna,
+                onValueChange = {
+                    comuna = it
+                    showError = false
+                },
+                label = { Text("Comuna") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -118,7 +111,7 @@ fun EditarProyectoScreen(
 
             if (showError) {
                 Text(
-                    text = "Nombre y dirección no pueden estar vacíos.",
+                    text = "Nombre, dirección y comuna no pueden estar vacíos.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -128,7 +121,7 @@ fun EditarProyectoScreen(
 
             Button(
                 onClick = {
-                    if (nombreProyecto.isBlank() || direccion.isBlank()) {
+                    if (nombreProyecto.isBlank() || direccion.isBlank() || comuna.isBlank()) {
                         showError = true
                     } else {
                         val produccion = produccionText.toIntOrNull() ?: 0
@@ -138,6 +131,7 @@ fun EditarProyectoScreen(
                         val proyectoActualizado = proyecto.copy(
                             nombre = nombreProyecto,
                             direccion = direccion,
+                            comuna = comuna,                       // 👈 NUEVO
                             estado = estado.ifBlank { proyecto.estado },
                             produccionActualW = produccion,
                             consumoActualW = consumo,

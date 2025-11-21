@@ -125,10 +125,11 @@ fun ProyectoItem(
                 .padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(text = proyecto.nombre, style = MaterialTheme.typography.titleMedium)
             Text(text = "Cliente: $clienteNombre")
             Text(text = "Dirección: ${proyecto.direccion}")
+            Text(text = "Comuna: ${proyecto.comuna}")   // 👈 NUEVO
             Text(text = "Estado: ${proyecto.estado}")
+
 
             Row(
                 modifier = Modifier

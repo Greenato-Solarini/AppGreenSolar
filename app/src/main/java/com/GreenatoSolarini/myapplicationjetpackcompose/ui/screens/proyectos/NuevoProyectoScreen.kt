@@ -23,6 +23,7 @@ fun NuevoProyectoScreen(
 
     var nombreProyecto by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
+    var comuna by remember { mutableStateOf("") }     // 👈 NUEVO
     var estado by remember { mutableStateOf("En evaluación") }
 
     var clienteSeleccionado by remember { mutableStateOf<Cliente?>(null) }
@@ -64,7 +65,7 @@ fun NuevoProyectoScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // -------- SELECCIÓN DE CLIENTE --------
+            // ---- CLIENTE ----
             if (clientes.isEmpty()) {
                 Text(
                     text = "No hay clientes registrados. Primero crea un cliente en el módulo Clientes.",
@@ -119,7 +120,17 @@ fun NuevoProyectoScreen(
                     direccion = it
                     showError = false
                 },
-                label = { Text("Dirección / Comuna") },
+                label = { Text("Dirección") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = comuna,
+                onValueChange = {
+                    comuna = it
+                    showError = false
+                },
+                label = { Text("Comuna") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -132,7 +143,7 @@ fun NuevoProyectoScreen(
 
             if (showError) {
                 Text(
-                    text = "Completa nombre, cliente y dirección.",
+                    text = "Completa nombre, cliente, dirección y comuna.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -144,7 +155,7 @@ fun NuevoProyectoScreen(
                 onClick = {
                     var hayError = false
 
-                    if (nombreProyecto.isBlank() || direccion.isBlank()) {
+                    if (nombreProyecto.isBlank() || direccion.isBlank() || comuna.isBlank()) {
                         showError = true
                         hayError = true
                     }
@@ -160,6 +171,7 @@ fun NuevoProyectoScreen(
                             nombre = nombreProyecto,
                             clienteId = clienteSeleccionado!!.id,
                             direccion = direccion,
+                            comuna = comuna,                       // 👈 NUEVO
                             estado = estado.ifBlank { "En evaluación" },
                             produccionActualW = 0,
                             consumoActualW = 0,

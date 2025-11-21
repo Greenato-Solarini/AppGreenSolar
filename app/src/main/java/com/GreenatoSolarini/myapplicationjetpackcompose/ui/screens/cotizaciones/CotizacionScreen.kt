@@ -1,26 +1,9 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.cotizaciones
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,13 +18,14 @@ fun CotizacionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Cotización GreenSolar") },
+                title = { Text("Calculadora Solar") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Volver"
                         )
+
                     }
                 }
             )
@@ -55,34 +39,9 @@ fun CotizacionScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            // Nombre cliente
-            OutlinedTextField(
-                value = viewModel.nombreCliente,
-                onValueChange = {
-                    viewModel.nombreCliente = it
-                    viewModel.nombreError = null
-                },
-                label = { Text("Nombre del cliente") },
-                modifier = Modifier.fillMaxWidth(),
-                isError = viewModel.nombreError != null
-            )
-            if (viewModel.nombreError != null) {
-                Text(
-                    text = viewModel.nombreError ?: "",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-
-            // Tipo de propiedad
-            OutlinedTextField(
-                value = viewModel.tipoPropiedad,
-                onValueChange = { viewModel.tipoPropiedad = it },
-                label = { Text("Tipo de propiedad (Casa / PYME / Campo)") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            // Consumo mensual
+            // ===========================
+            // 🔵 Consumo mensual
+            // ===========================
             OutlinedTextField(
                 value = viewModel.consumoMensualText,
                 onValueChange = {
@@ -101,7 +60,9 @@ fun CotizacionScreen(
                 )
             }
 
-            // Metros de techo
+            // ===========================
+            // 🔵 Metros de techo
+            // ===========================
             OutlinedTextField(
                 value = viewModel.metrosTechoText,
                 onValueChange = {
@@ -120,8 +81,10 @@ fun CotizacionScreen(
                 )
             }
 
-            // Checkbox baterías
-            Row {
+            // ===========================
+            // 🔵 Checkbox baterías
+            // ===========================
+            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                 Checkbox(
                     checked = viewModel.incluirBaterias,
                     onCheckedChange = { viewModel.incluirBaterias = it }
@@ -129,17 +92,20 @@ fun CotizacionScreen(
                 Text("Incluir baterías de respaldo")
             }
 
+            // ===========================
+            // 🔵 Botón calcular
+            // ===========================
             Button(
                 onClick = { viewModel.onCalcular() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Calcular cotización")
+                Text("Calcular")
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            val resultado = viewModel.resultado
-            if (resultado != null) {
+            // ===========================
+            // 🟢 Resultado
+            // ===========================
+            viewModel.resultado?.let { resultado ->
                 Card(
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -149,10 +115,7 @@ fun CotizacionScreen(
                             .padding(12.dp),
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        Text(
-                            text = "Resultado de la cotización",
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                        Text("Resultado", style = MaterialTheme.typography.titleMedium)
                         Text("Potencia recomendada: ${"%.1f".format(resultado.potenciaRecomendadaKw)} kW")
                         Text("Número de paneles: ${resultado.numeroPaneles}")
                         Text("Inversión estimada: ${resultado.inversionAproximada} CLP")
