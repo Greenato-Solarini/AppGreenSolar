@@ -1,29 +1,33 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.provider.MediaStore
-import android.Manifest
-import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -44,14 +48,16 @@ fun EditarProductoScreen(
     var nombre by remember { mutableStateOf(producto.nombre) }
     var precioText by remember { mutableStateOf(producto.precio.toString()) }
     var descripcion by remember { mutableStateOf(producto.descripcion) }
+
     var showError by remember { mutableStateOf(false) }
 
+    // Foto inicial desde ViewModel / Room
     var fotoProducto by remember {
-        mutableStateOf<Bitmap?>(viewModel.obtenerFotoProducto(producto.id))
+        mutableStateOf(viewModel.obtenerFotoProducto(producto.id))
     }
     var permisoDenegado by remember { mutableStateOf(false) }
 
-    // Launcher para cámara
+    // Cámara
     val takePictureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
@@ -61,7 +67,7 @@ fun EditarProductoScreen(
         }
     }
 
-    // Launcher para pedir permiso de cámara
+    // Permiso cámara
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -73,7 +79,7 @@ fun EditarProductoScreen(
         }
     }
 
-    // Launcher para elegir imagen desde galería
+    // Galería
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
@@ -114,10 +120,20 @@ fun EditarProductoScreen(
         pickImageLauncher.launch("image/*")
     }
 
+    val scrollState = rememberScrollState()
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Editar producto") }
+                title = { Text("Editar producto solar") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Volver"
+                        )
+                    }
+                }
             )
         }
     ) { padding ->
@@ -125,7 +141,8 @@ fun EditarProductoScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
@@ -133,7 +150,7 @@ fun EditarProductoScreen(
                 value = nombre,
                 onValueChange = {
                     nombre = it
-                    if (showError) showError = false
+                    showError = false
                 },
                 label = { Text("Nombre del producto") },
                 modifier = Modifier.fillMaxWidth()
@@ -143,10 +160,11 @@ fun EditarProductoScreen(
                 value = precioText,
                 onValueChange = {
                     precioText = it
-                    if (showError) showError = false
+                    showError = false
                 },
                 label = { Text("Precio (CLP)") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                isError = showError
             )
 
             OutlinedTextField(
@@ -164,7 +182,45 @@ fun EditarProductoScreen(
                 )
             }
 
-            // Botón GUARDAR
+            // BOTONES FOTO
+            Button(
+                onClick = { manejarClickCamara() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Tomar foto del producto (Cámara)")
+            }
+
+            Button(
+                onClick = { manejarClickGaleria() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Elegir foto desde galería")
+            }
+
+            if (permisoDenegado) {
+                Text(
+                    text = "Permiso de cámara denegado. Actívalo en ajustes para usar esta función.",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            fotoProducto?.let { bitmap ->
+                Text(
+                    text = "Imagen asociada al producto:",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = "Foto del producto",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Button(
                 onClick = {
                     val precio = precioText.toIntOrNull()
@@ -185,46 +241,7 @@ fun EditarProductoScreen(
                 Text("Guardar cambios")
             }
 
-            // Recurso nativo 1: CÁMARA
             Button(
-                onClick = { manejarClickCamara() },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Tomar foto del producto (Cámara)")
-            }
-
-            // Recurso nativo 2: GALERÍA
-            OutlinedButton(
-                onClick = { manejarClickGaleria() },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Elegir imagen desde galería")
-            }
-
-            if (permisoDenegado) {
-                Text(
-                    text = "Permiso de cámara denegado. Actívalo en ajustes para usar esta función.",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-
-            fotoProducto?.let { bitmap ->
-                Text(
-                    text = "Imagen asociada al producto:",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = "Imagen del producto",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(180.dp)
-                )
-            }
-
-            // Botón CANCELAR al final
-            OutlinedButton(
                 onClick = onBack,
                 modifier = Modifier.fillMaxWidth()
             ) {

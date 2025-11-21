@@ -1,15 +1,15 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import android.graphics.Bitmap
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
 import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProductoRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 class ProductosViewModel(
     private val repository: ProductoRepository
@@ -21,6 +21,18 @@ class ProductosViewModel(
         initialValue = emptyList()
     )
 
+    // ------- utilidades para convertir Bitmap <-> ByteArray -------
+    private fun bitmapToBytes(bitmap: Bitmap): ByteArray {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+        return stream.toByteArray()
+    }
+
+    private fun bytesToBitmap(bytes: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    }
+
+    // -------- CRUD básico --------
     fun agregarProducto(nombre: String, precio: Int, descripcion: String) {
         viewModelScope.launch {
             repository.insertar(
@@ -34,13 +46,12 @@ class ProductosViewModel(
     }
 
     fun obtenerProductoPorId(id: Int): Producto? {
-        // Tomamos el producto desde el StateFlow actual
         return productos.value.firstOrNull { it.id == id }
     }
 
     fun actualizarProducto(producto: Producto) {
         viewModelScope.launch {
-            repository.actualizarProducto(producto)
+            repository.actualizar(producto)
         }
     }
 
@@ -50,18 +61,20 @@ class ProductosViewModel(
         }
     }
 
-    // Mapa idProducto -> foto (solo en memoria, no persistente)
-    private val _fotosProducto = MutableStateFlow<Map<Int, Bitmap?>>(emptyMap())
-    val fotosProducto = _fotosProducto.asStateFlow()
+    // -------- PERSISTENCIA DE FOTO --------
 
     fun guardarFotoProducto(id: Int, bitmap: Bitmap) {
-        val actual = _fotosProducto.value.toMutableMap()
-        actual[id] = bitmap
-        _fotosProducto.value = actual
+        viewModelScope.launch {
+            val productoActual = repository.obtenerPorId(id) ?: return@launch
+            val bytes = bitmapToBytes(bitmap)
+            val actualizado = productoActual.copy(foto = bytes)
+            repository.actualizar(actualizado)
+        }
     }
 
     fun obtenerFotoProducto(id: Int): Bitmap? {
-        return _fotosProducto.value[id]
+        val producto = productos.value.firstOrNull { it.id == id } ?: return null
+        val bytes = producto.foto ?: return null
+        return bytesToBitmap(bytes)
     }
-
 }

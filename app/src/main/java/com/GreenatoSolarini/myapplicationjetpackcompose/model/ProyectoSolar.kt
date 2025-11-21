@@ -5,13 +5,14 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "proyectos")
 data class ProyectoSolar(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val nombre: String,
     val cliente: String,
     val direccion: String,
     val estado: String,
-    val produccionActualW: Int = 0,
-    val consumoActualW: Int = 0,
-    val ahorroHoyClp: Int = 0
+    val produccionActualW: Int,
+    val consumoActualW: Int,
+    val ahorroHoyClp: Int,
+    // Nueva columna para la foto del proyecto
+    val foto: ByteArray? = null
 )

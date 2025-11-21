@@ -14,9 +14,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,12 +107,21 @@ fun NuevoProyectoScreen(
                     ) {
                         showError = true
                     } else {
-                        viewModel.crearProyecto(
+                        // Creamos el objeto ProyectoSolar completo
+                        val nuevoProyecto = ProyectoSolar(
+                            // id = 0 -> Room lo autogenera
+                            id = 0,
                             nombre = nombreProyecto,
                             cliente = nombreCliente,
                             direccion = direccion,
-                            estado = estado.ifBlank { "En evaluación" }
+                            estado = estado.ifBlank { "En evaluación" },
+                            produccionActualW = 0,
+                            consumoActualW = 0,
+                            ahorroHoyClp = 0,
+                            foto = null
                         )
+
+                        viewModel.agregarProyecto(nuevoProyecto)
                         onBack()
                     }
                 },

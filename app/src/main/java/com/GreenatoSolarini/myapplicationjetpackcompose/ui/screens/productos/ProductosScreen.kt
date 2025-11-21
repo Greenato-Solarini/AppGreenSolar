@@ -1,14 +1,14 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,6 +35,7 @@ fun ProductosScreen(
     viewModel: ProductosViewModel,
     onNavigateToAdd: () -> Unit,
     onNavigateToEdit: (Int) -> Unit,
+    onNavigateToDetail: (Int) -> Unit,
     onBack: () -> Unit
 ) {
     val productos by viewModel.productos.collectAsState()
@@ -91,6 +92,7 @@ fun ProductosScreen(
                     items(productos) { producto ->
                         ProductoItem(
                             producto = producto,
+                            onClick = { onNavigateToDetail(producto.id) },
                             onEdit = { onNavigateToEdit(producto.id) },
                             onDelete = { viewModel.eliminarProducto(producto) }
                         )
@@ -104,13 +106,15 @@ fun ProductosScreen(
 @Composable
 fun ProductoItem(
     producto: Producto,
+    onClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
             contentColor = MaterialTheme.colorScheme.onSurface

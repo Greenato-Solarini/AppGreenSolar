@@ -18,6 +18,7 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.cotizaciones.
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.home.HomeScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.AddProductScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.EditarProductoScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.ProductoDetailScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.ProductosScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.EditarProyectoScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.NuevoProyectoScreen
@@ -80,6 +81,7 @@ fun AppNavGraph(
         navController = navController,
         startDestination = "home"
     ) {
+
         // ---------- HOME ----------
         composable("home") {
             HomeScreen(
@@ -96,6 +98,9 @@ fun AppNavGraph(
                 onNavigateToAdd = { navController.navigate("addProducto") },
                 onNavigateToEdit = { id ->
                     navController.navigate("productoEditar/$id")
+                },
+                onNavigateToDetail = { id ->
+                    navController.navigate("productoDetalle/$id")
                 },
                 onBack = { navController.popBackStack() }
             )
@@ -114,6 +119,21 @@ fun AppNavGraph(
 
             if (producto != null) {
                 EditarProductoScreen(
+                    producto = producto,
+                    viewModel = productosViewModel,
+                    onBack = { navController.popBackStack() }
+                )
+            } else {
+                navController.popBackStack()
+            }
+        }
+
+        composable("productoDetalle/{id}") { backStackEntry ->
+            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val producto = idParam?.let { productosViewModel.obtenerProductoPorId(it) }
+
+            if (producto != null) {
+                ProductoDetailScreen(
                     producto = producto,
                     viewModel = productosViewModel,
                     onBack = { navController.popBackStack() }

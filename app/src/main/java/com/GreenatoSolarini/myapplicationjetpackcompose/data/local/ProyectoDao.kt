@@ -23,6 +23,6 @@ interface ProyectoDao {
     @Update
     suspend fun update(proyecto: ProyectoSolar)
 
-    @Delete
-    suspend fun delete(proyecto: ProyectoSolar)
+    @Query("DELETE FROM proyectos WHERE id = :id")
+    suspend fun deleteById(id: Int)
 }

@@ -1,11 +1,15 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -13,7 +17,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.GreenatoSolarini.myapplicationjetpackcompose.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +32,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("GreenSolar SPA") }
+                title = { Text("GreenSolar App") } // ← aquí puedes poner solo "GreenSolar" si quieres
             )
         }
     ) { padding ->
@@ -33,31 +40,78 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            Text(
-                text = "Panel principal",
-                style = MaterialTheme.typography.headlineSmall
+
+            // ---------- LOGO ----------
+            Image(
+                painter = painterResource(id = R.drawable.greenatosolarini),
+                contentDescription = "Logo GreenSolar",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .size(160.dp)
+                    .padding(top = 24.dp)
             )
 
-            Text(
-                text = "Gestiona productos, proyectos solares y cotizaciones.",
-                style = MaterialTheme.typography.bodyMedium
+            // ---------- TARJETAS OPCIONES ----------
+            HomeOptionCard(
+                title = "Proyectos solares",
+                icon = Icons.Default.Home,
+                onClick = onNavigateToProyectos
             )
 
-            Button(onClick = onNavigateToProductos) {
-                Text("Ver productos solares")
-            }
+            HomeOptionCard(
+                title = "Productos solares",
+                icon = Icons.Default.Build,
+                onClick = onNavigateToProductos
+            )
 
-            Button(onClick = onNavigateToCotizacion) {
-                Text("Calcular cotización solar")
-            }
+            HomeOptionCard(
+                title = "Cotización",
+                icon = Icons.Default.Star,
+                onClick = onNavigateToCotizacion
+            )
+        }
+    }
+}
 
-            Button(onClick = onNavigateToProyectos) {
-                Text("Ver proyectos solares")
-            }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeOptionCard(
+    title: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    onClick: () -> Unit
+) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(90.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(36.dp)
+            )
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }
