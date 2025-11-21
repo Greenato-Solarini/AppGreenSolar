@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
@@ -17,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -27,12 +29,13 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.R
 fun HomeScreen(
     onNavigateToProductos: () -> Unit,
     onNavigateToCotizacion: () -> Unit,
-    onNavigateToProyectos: () -> Unit
+    onNavigateToProyectos: () -> Unit,
+    onNavigateToClientes: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("GreenSolar App") } // ← aquí puedes poner solo "GreenSolar" si quieres
+                title = { Text("GreenSolar App") }
             )
         }
     ) { padding ->
@@ -55,7 +58,13 @@ fun HomeScreen(
                     .padding(top = 24.dp)
             )
 
-            // ---------- TARJETAS OPCIONES ----------
+            // ---------- CLIENTES ----------
+            HomeOptionCard(
+                title = "Clientes",
+                icon = Icons.Default.Person,
+                onClick = onNavigateToClientes
+            )
+
             HomeOptionCard(
                 title = "Proyectos solares",
                 icon = Icons.Default.Home,
@@ -81,7 +90,7 @@ fun HomeScreen(
 @Composable
 fun HomeOptionCard(
     title: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     onClick: () -> Unit
 ) {
     Card(
