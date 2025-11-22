@@ -1,5 +1,6 @@
 package com.GreenatoSolarini.myapplicationjetpackcompose
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,24 +12,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.collectAsState
 import com.GreenatoSolarini.myapplicationjetpackcompose.data.local.DatabaseProvider
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ClienteRepository
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProductoRepository
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProyectoRepository
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes.ClienteDetailScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes.ClientesScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes.EditarClienteScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes.NuevoClienteScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.repository.*
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes.*
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.cotizaciones.CotizacionScreen
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.home.HomeScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.AddProductScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.EditarProductoScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.ProductoDetailScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.ProductosScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.EditarProyectoScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.NuevoProyectoScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.ProyectoDetailScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.ProyectosScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.instaladores.InstaladoresScreen
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.*
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.*
+import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.instaladores.*
 import com.GreenatoSolarini.myapplicationjetpackcompose.ui.theme.MyApplicationJetpackComposeTheme
 import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.*
 
@@ -49,6 +42,7 @@ class MainActivity : ComponentActivity() {
                 val productoRepository = ProductoRepository(db.productoDao())
                 val proyectoRepository = ProyectoRepository(db.proyectoDao())
                 val clienteRepository = ClienteRepository(db.clienteDao())
+                val instaladorRepository = InstaladorRepository(db.instaladorDao())
 
                 // -------- ViewModels --------
                 val productosViewModel: ProductosViewModel =
@@ -60,6 +54,9 @@ class MainActivity : ComponentActivity() {
                 val clientesViewModel: ClientesViewModel =
                     viewModel(factory = ClientesViewModelFactory(clienteRepository))
 
+                val instaladoresViewModel: InstaladoresViewModel =
+                    viewModel(factory = InstaladoresViewModelFactory(instaladorRepository))
+
                 val cotizacionViewModel: CotizacionViewModel = viewModel()
 
                 AppNavGraph(
@@ -67,7 +64,8 @@ class MainActivity : ComponentActivity() {
                     productosViewModel = productosViewModel,
                     cotizacionViewModel = cotizacionViewModel,
                     proyectosViewModel = proyectosViewModel,
-                    clientesViewModel = clientesViewModel
+                    clientesViewModel = clientesViewModel,
+                    instaladoresViewModel = instaladoresViewModel
                 )
             }
         }
@@ -80,21 +78,79 @@ fun AppNavGraph(
     productosViewModel: ProductosViewModel,
     cotizacionViewModel: CotizacionViewModel,
     proyectosViewModel: ProyectosViewModel,
-    clientesViewModel: ClientesViewModel
+    clientesViewModel: ClientesViewModel,
+    instaladoresViewModel: InstaladoresViewModel
 ) {
     NavHost(
         navController = navController,
         startDestination = "home"
     ) {
+
         // ---------- HOME ----------
         composable("home") {
             HomeScreen(
                 onNavigateToProductos = { navController.navigate("productos") },
                 onNavigateToCotizacion = { navController.navigate("cotizacion") },
                 onNavigateToProyectos = { navController.navigate("proyectos") },
-                onNavigateToClientes = { navController.navigate("clientes") }
+                onNavigateToClientes = { navController.navigate("clientes") },
+                onNavigateToInstaladores = { navController.navigate("instaladores") }
             )
         }
+
+        // ---------- INSTALADORES ----------
+        composable("instaladores") {
+            InstaladoresScreen(
+                viewModel = instaladoresViewModel,
+                onNavigateToNuevo = { navController.navigate("instaladorNuevo") },
+                onInstaladorClick = { id -> navController.navigate("instaladorDetalle/$id") },
+                onInstaladorEdit = { id -> navController.navigate("instaladorEditar/$id") },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+
+        composable("instaladorNuevo") {
+            NuevoInstaladorScreen(
+                viewModel = instaladoresViewModel,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable("instaladorEditar/{id}") { backStackEntry ->
+            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val instalador = idParam?.let { instaladoresViewModel.obtenerInstaladorPorId(it) }
+
+            if (instalador != null) {
+                EditarInstaladorScreen(
+                    instaladorInicial = instalador,
+                    viewModel = instaladoresViewModel,
+                    onBack = { navController.popBackStack() }
+                )
+            } else {
+                navController.popBackStack()
+            }
+        }
+
+        composable("instaladorDetalle/{id}") { backStackEntry ->
+            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val instalador = idParam?.let { instaladoresViewModel.obtenerInstaladorPorId(it) }
+
+            if (instalador != null) {
+                // 👇 Obtenemos los proyectos y filtramos los asignados a este instalador
+                val proyectosState = proyectosViewModel.proyectos.collectAsState()
+                val proyectosAsignados = proyectosState.value.filter { it.instaladorId == instalador.id }
+
+                InstaladorDetailScreen(
+                    instalador = instalador,
+                    proyectosAsignados = proyectosAsignados,
+                    onBack = { navController.popBackStack() }
+                )
+            } else {
+                navController.popBackStack()
+            }
+        }
+
+
 
         // ---------- CLIENTES ----------
         composable("clientes") {
@@ -115,8 +171,8 @@ fun AppNavGraph(
         }
 
         composable("clienteEditar/{id}") { backStackEntry ->
-            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            val cliente = idParam?.let { clientesViewModel.obtenerClientePorId(it) }
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val cliente = id?.let { clientesViewModel.obtenerClientePorId(it) }
 
             if (cliente != null) {
                 EditarClienteScreen(
@@ -124,23 +180,19 @@ fun AppNavGraph(
                     viewModel = clientesViewModel,
                     onBack = { navController.popBackStack() }
                 )
-            } else {
-                navController.popBackStack()
-            }
+            } else navController.popBackStack()
         }
 
         composable("clienteDetalle/{id}") { backStackEntry ->
-            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            val cliente = idParam?.let { clientesViewModel.obtenerClientePorId(it) }
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val cliente = id?.let { clientesViewModel.obtenerClientePorId(it) }
 
             if (cliente != null) {
                 ClienteDetailScreen(
                     cliente = cliente,
                     onBack = { navController.popBackStack() }
                 )
-            } else {
-                navController.popBackStack()
-            }
+            } else navController.popBackStack()
         }
 
         // ---------- PRODUCTOS ----------
@@ -154,7 +206,6 @@ fun AppNavGraph(
             )
         }
 
-
         composable("addProducto") {
             AddProductScreen(
                 viewModel = productosViewModel,
@@ -163,8 +214,8 @@ fun AppNavGraph(
         }
 
         composable("productoEditar/{id}") { backStackEntry ->
-            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            val producto = idParam?.let { productosViewModel.obtenerProductoPorId(it) }
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val producto = id?.let { productosViewModel.obtenerProductoPorId(it) }
 
             if (producto != null) {
                 EditarProductoScreen(
@@ -172,14 +223,12 @@ fun AppNavGraph(
                     viewModel = productosViewModel,
                     onBack = { navController.popBackStack() }
                 )
-            } else {
-                navController.popBackStack()
-            }
+            } else navController.popBackStack()
         }
 
         composable("productoDetalle/{id}") { backStackEntry ->
-            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            val producto = idParam?.let { productosViewModel.obtenerProductoPorId(it) }
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val producto = id?.let { productosViewModel.obtenerProductoPorId(it) }
 
             if (producto != null) {
                 ProductoDetailScreen(
@@ -187,9 +236,7 @@ fun AppNavGraph(
                     viewModel = productosViewModel,
                     onBack = { navController.popBackStack() }
                 )
-            } else {
-                navController.popBackStack()
-            }
+            } else navController.popBackStack()
         }
 
         // ---------- COTIZACIÓN ----------
@@ -205,6 +252,7 @@ fun AppNavGraph(
             ProyectosScreen(
                 viewModel = proyectosViewModel,
                 clientesViewModel = clientesViewModel,
+                instaladoresViewModel = instaladoresViewModel,
                 onProyectoClick = { id -> navController.navigate("proyectoDetalle/$id") },
                 onProyectoEdit = { id -> navController.navigate("proyectoEditar/$id") },
                 onProyectoDelete = { id -> proyectosViewModel.eliminarProyectoPorId(id) },
@@ -217,13 +265,14 @@ fun AppNavGraph(
             NuevoProyectoScreen(
                 viewModel = proyectosViewModel,
                 clientesViewModel = clientesViewModel,
+                instaladoresViewModel = instaladoresViewModel,
                 onBack = { navController.popBackStack() }
             )
         }
 
         composable("proyectoEditar/{id}") { backStackEntry ->
-            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            val proyecto = idParam?.let { proyectosViewModel.obtenerProyectoPorId(it) }
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val proyecto = id?.let { proyectosViewModel.obtenerProyectoPorId(it) }
 
             if (proyecto != null) {
                 EditarProyectoScreen(
@@ -231,29 +280,31 @@ fun AppNavGraph(
                     viewModel = proyectosViewModel,
                     onBack = { navController.popBackStack() }
                 )
-            } else {
-                navController.popBackStack()
-            }
+            } else navController.popBackStack()
         }
 
         composable("proyectoDetalle/{id}") { backStackEntry ->
-            val idParam = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            val proyecto = idParam?.let { proyectosViewModel.obtenerProyectoPorId(it) }
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            val proyecto = id?.let { proyectosViewModel.obtenerProyectoPorId(it) }
 
             if (proyecto != null) {
+
                 val clienteNombre = clientesViewModel
                     .obtenerClientePorId(proyecto.clienteId)
                     ?.nombre ?: "Cliente no encontrado"
 
+                val instaladorNombre = proyecto.instaladorId?.let {
+                    instaladoresViewModel.obtenerInstaladorPorId(it)?.nombre
+                } ?: "Sin instalador asignado"
+
                 ProyectoDetailScreen(
                     proyecto = proyecto,
                     clienteNombre = clienteNombre,
+                    instaladorNombre = instaladorNombre,
                     viewModel = proyectosViewModel,
                     onBack = { navController.popBackStack() }
                 )
-            } else {
-                navController.popBackStack()
-            }
+            } else navController.popBackStack()
         }
     }
 }

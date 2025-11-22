@@ -15,7 +15,7 @@ object DatabaseProvider {
                 AppDatabase::class.java,
                 "greensolar_db"
             )
-                .fallbackToDestructiveMigration() // para no complicarnos con migraciones ahora
+                .fallbackToDestructiveMigration()
                 .build()
                 .also { INSTANCE = it }
         }

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Engineering
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,7 +31,8 @@ fun HomeScreen(
     onNavigateToProductos: () -> Unit,
     onNavigateToCotizacion: () -> Unit,
     onNavigateToProyectos: () -> Unit,
-    onNavigateToClientes: () -> Unit
+    onNavigateToClientes: () -> Unit,
+    onNavigateToInstaladores: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -43,26 +45,31 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(20.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            // ---------- LOGO ----------
+            // ---------- LOGO (más compacto) ----------
             Image(
                 painter = painterResource(id = R.drawable.greenatosolarini),
                 contentDescription = "Logo GreenSolar",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .size(160.dp)
-                    .padding(top = 24.dp)
+                    .size(120.dp)
+                    .padding(top = 8.dp, bottom = 8.dp)
             )
 
-            // ---------- CLIENTES ----------
             HomeOptionCard(
                 title = "Clientes",
                 icon = Icons.Default.Person,
                 onClick = onNavigateToClientes
+            )
+
+            HomeOptionCard(
+                title = "Instaladores",
+                icon = Icons.Default.Engineering,
+                onClick = onNavigateToInstaladores
             )
 
             HomeOptionCard(
@@ -97,25 +104,25 @@ fun HomeOptionCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(90.dp),
+            .height(68.dp), // 👈 más bajo que antes
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(horizontal = 12.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = title,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(28.dp)
             )
             Text(
                 text = title,

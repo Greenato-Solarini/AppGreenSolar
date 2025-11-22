@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
+package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.instaladores
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,16 +8,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,31 +16,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.InstaladoresViewModel   // 👈 IMPORT IMPORTANTE
+import com.GreenatoSolarini.myapplicationjetpackcompose.model.Instalador
+import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.InstaladoresViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProyectosScreen(
-    viewModel: ProyectosViewModel,
-    clientesViewModel: ClientesViewModel,
-    instaladoresViewModel: InstaladoresViewModel,   // 👈 NUEVO
-    onProyectoClick: (Int) -> Unit,
-    onProyectoEdit: (Int) -> Unit,
-    onProyectoDelete: (Int) -> Unit,
+fun InstaladoresScreen(
+    viewModel: InstaladoresViewModel,
     onNavigateToNuevo: () -> Unit,
+    onInstaladorClick: (Int) -> Unit,
+    onInstaladorEdit: (Int) -> Unit,
     onBack: () -> Unit
 ) {
-    val proyectos by viewModel.proyectos.collectAsState()
-    val clientes by clientesViewModel.clientes.collectAsState()
-    val instaladores by instaladoresViewModel.instaladores.collectAsState()  // 👈 AQUÍ VA LA LÍNEA CORRECTA
+    val instaladores by viewModel.instaladores.collectAsState()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Proyectos solares") },
+                title = { Text("Instaladores") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -68,7 +52,7 @@ fun ProyectosScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Nuevo proyecto"
+                    contentDescription = "Nuevo instalador"
                 )
             }
         }
@@ -79,14 +63,14 @@ fun ProyectosScreen(
                 .padding(padding)
         ) {
 
-            if (proyectos.isEmpty()) {
+            if (instaladores.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No hay proyectos registrados todavía.")
+                    Text("No hay instaladores registrados todavía.")
                 }
             } else {
                 LazyColumn(
@@ -94,22 +78,12 @@ fun ProyectosScreen(
                         .fillMaxSize()
                         .weight(1f)
                 ) {
-                    items(proyectos) { proyecto ->
-                        val clienteNombre = clientes
-                            .firstOrNull { it.id == proyecto.clienteId }
-                            ?.nombre ?: "Cliente no encontrado"
-
-                        val instaladorNombre = proyecto.instaladorId?.let { idInst ->
-                            instaladores.firstOrNull { it.id == idInst }?.nombre
-                        } ?: "Sin instalador asignado"
-
-                        ProyectoItem(
-                            proyecto = proyecto,
-                            clienteNombre = clienteNombre,
-                            instaladorNombre = instaladorNombre,   // 👈 PASAMOS NOMBRE
-                            onClick = { onProyectoClick(proyecto.id) },
-                            onEdit = { onProyectoEdit(proyecto.id) },
-                            onDelete = { onProyectoDelete(proyecto.id) }
+                    items(instaladores) { instalador ->
+                        InstaladorItem(
+                            instalador = instalador,
+                            onClick = { onInstaladorClick(instalador.id) },
+                            onEdit = { onInstaladorEdit(instalador.id) },
+                            onDelete = { viewModel.eliminarInstalador(instalador) }
                         )
                     }
                 }
@@ -119,10 +93,8 @@ fun ProyectosScreen(
 }
 
 @Composable
-fun ProyectoItem(
-    proyecto: ProyectoSolar,
-    clienteNombre: String,
-    instaladorNombre: String,          // 👈 NUEVO
+fun InstaladorItem(
+    instalador: Instalador,
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
@@ -143,12 +115,12 @@ fun ProyectoItem(
                 .padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(text = proyecto.nombre, style = MaterialTheme.typography.titleMedium)
-            Text(text = "Cliente: $clienteNombre")
-            Text(text = "Instalador: $instaladorNombre")
-            Text(text = "Dirección: ${proyecto.direccion}")
-            Text(text = "Comuna: ${proyecto.comuna}")
-            Text(text = "Estado: ${proyecto.estado}")
+            Text(
+                text = instalador.nombre,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(text = "Email: ${instalador.email}")
+            Text(text = "Teléfono: ${instalador.telefono}")
 
             Row(
                 modifier = Modifier
@@ -159,13 +131,13 @@ fun ProyectoItem(
                 IconButton(onClick = onEdit) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Editar proyecto"
+                        contentDescription = "Editar instalador"
                     )
                 }
                 IconButton(onClick = onDelete) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Eliminar proyecto"
+                        contentDescription = "Eliminar instalador"
                     )
                 }
             }

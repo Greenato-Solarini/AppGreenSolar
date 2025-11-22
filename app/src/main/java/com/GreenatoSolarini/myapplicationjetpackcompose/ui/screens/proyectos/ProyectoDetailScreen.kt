@@ -28,16 +28,19 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewM
 fun ProyectoDetailScreen(
     proyecto: ProyectoSolar,
     clienteNombre: String,
+    instaladorNombre: String,        // ← nuevo parámetro
     viewModel: ProyectosViewModel,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
 
+    // Cargar foto previa si existe
     var fotoProyecto by remember {
         mutableStateOf<Bitmap?>(viewModel.obtenerFotoProyecto(proyecto.id))
     }
     var permisoDenegado by remember { mutableStateOf(false) }
 
+    // Launcher para cámara
     val takePictureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
@@ -47,6 +50,7 @@ fun ProyectoDetailScreen(
         }
     }
 
+    // Launcher para pedir permiso de cámara
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -58,6 +62,7 @@ fun ProyectoDetailScreen(
         }
     }
 
+    // Launcher para galería
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
@@ -136,12 +141,12 @@ fun ProyectoDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text("Cliente: $clienteNombre", style = MaterialTheme.typography.bodyLarge)
+                    Text("Instalador: $instaladorNombre", style = MaterialTheme.typography.bodyMedium)
                     Text("Dirección: ${proyecto.direccion}", style = MaterialTheme.typography.bodyMedium)
-                    Text("Comuna: ${proyecto.comuna}", style = MaterialTheme.typography.bodyMedium) // 👈 NUEVO
+                    Text("Comuna: ${proyecto.comuna}", style = MaterialTheme.typography.bodyMedium)
                     Text("Estado: ${proyecto.estado}", style = MaterialTheme.typography.bodyMedium)
                 }
             }
-
 
             // MONITOREO
             Card(
@@ -167,6 +172,7 @@ fun ProyectoDetailScreen(
                 }
             }
 
+            // BOTONES RECURSOS NATIVOS
             Button(
                 onClick = { manejarClickCamara() },
                 modifier = Modifier.fillMaxWidth()
