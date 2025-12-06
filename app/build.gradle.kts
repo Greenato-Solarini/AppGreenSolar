@@ -74,4 +74,13 @@ dependencies {
 
     // Íconos extendidos
     implementation("androidx.compose.material:material-icons-extended:1.6.1")
+
+
+    //Test unitarios
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+
+
+    //Integracion de APPI
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 }

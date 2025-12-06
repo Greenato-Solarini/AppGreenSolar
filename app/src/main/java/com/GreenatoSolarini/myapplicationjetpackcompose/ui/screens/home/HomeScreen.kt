@@ -16,7 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,6 +24,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.GreenatoSolarini.myapplicationjetpackcompose.R
+import com.GreenatoSolarini.myapplicationjetpackcompose.model.WeatherResponse
+import com.GreenatoSolarini.myapplicationjetpackcompose.repository.WeatherRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +36,22 @@ fun HomeScreen(
     onNavigateToClientes: () -> Unit,
     onNavigateToInstaladores: () -> Unit
 ) {
+    // Estados para el clima
+    var weather by remember { mutableStateOf<WeatherResponse?>(null) }
+    var loading by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf(false) }
+
+    //  Cargar clima al iniciar
+    LaunchedEffect(Unit) {
+        try {
+            weather = WeatherRepository.getWeather()
+        } catch (e: Exception) {
+            error = true
+        } finally {
+            loading = false
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -50,7 +68,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            // ---------- LOGO (más compacto) ----------
+            // ---------- LOGO ----------
             Image(
                 painter = painterResource(id = R.drawable.greenatosolarini),
                 contentDescription = "Logo GreenSolar",
@@ -60,6 +78,47 @@ fun HomeScreen(
                     .padding(top = 8.dp, bottom = 8.dp)
             )
 
+            //  TARJETA DE CLIMA (nueva)
+            if (!loading && !error && weather != null) {
+                val current = weather!!.current
+                val radiation = weather!!.hourly.shortwave_radiation.firstOrNull() ?: 0.0
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text("🌤️ Clima para paneles solares", style = MaterialTheme.typography.titleMedium)
+                        Text("Temperatura: ${String.format("%.1f", current.temperature_2m)} °C")
+                        Text("Radiación solar: ${String.format("%.1f", radiation)} W/m²")
+                        Text("Viento: ${String.format("%.1f", current.wind_speed_10m)} km/h")
+                    }
+                }
+            } else if (error) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+                    )
+                ) {
+                    Text(
+                        text = "⚠️ No se pudo cargar el clima",
+                        modifier = Modifier.padding(12.dp),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+            //  Fin de tarjeta de clima
+
+            // ---------- MENÚ PRINCIPAL ----------
             HomeOptionCard(
                 title = "Clientes",
                 icon = Icons.Default.Person,
@@ -104,7 +163,7 @@ fun HomeOptionCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(68.dp), // 👈 más bajo que antes
+            .height(68.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface

@@ -25,4 +25,6 @@ interface ClienteDao {
 
     @Query("SELECT * FROM clientes WHERE id = :id LIMIT 1")
     suspend fun getById(id: Int): Cliente?
+
+
 }
