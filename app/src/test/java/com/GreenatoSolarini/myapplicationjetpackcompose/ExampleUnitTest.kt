@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose
+package com.greenatosolarini.myapplicationjetpackcompose
 
 import org.junit.Test
 

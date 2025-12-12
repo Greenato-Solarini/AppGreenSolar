@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.home
+package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -23,9 +23,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.R
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.WeatherResponse
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.WeatherRepository
+import com.greenatosolarini.myapplicationjetpackcompose.R
+import com.greenatosolarini.myapplicationjetpackcompose.model.WeatherResponse
+import com.greenatosolarini.myapplicationjetpackcompose.repository.WeatherRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

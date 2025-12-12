@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.instaladores
+package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.instaladores
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Instalador
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.greenatosolarini.myapplicationjetpackcompose.model.Instalador
+import com.greenatosolarini.myapplicationjetpackcompose.model.ProyectoSolar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

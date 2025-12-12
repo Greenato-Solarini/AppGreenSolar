@@ -6,11 +6,14 @@ plugins {
 }
 
 android {
-    namespace = "com.GreenatoSolarini.myapplicationjetpackcompose"
+
+    // NAMESPACE CORREGIDO (todo minúsculas)
+    namespace = "com.greenatosolarini.myapplicationjetpackcompose"
+
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.GreenatoSolarini.myapplicationjetpackcompose"
+        applicationId = "com.greenatosolarini.myapplicationjetpackcompose"
         minSdk = 29
         targetSdk = 35
         versionCode = 1
@@ -19,8 +22,19 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // FIRMA DEL APK
+    signingConfigs {
+        create("release") {
+            storeFile = file("my-release-key.jks")       // Cambia ruta si quieres
+            storePassword = "123456"                    // Cambiar
+            keyPassword = "123456"                      // Cambiar
+            keyAlias = "mykey"                          // Cambiar
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -28,13 +42,16 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
+
     buildFeatures {
         compose = true
     }
@@ -46,7 +63,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
 
-    // BOM de Compose
+    // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.androidx.ui)
@@ -72,15 +89,13 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
 
-    // Íconos extendidos
+    // Material icons extendidos
     implementation("androidx.compose.material:material-icons-extended:1.6.1")
 
-
-    //Test unitarios
+    // Test unitarios
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
 
-
-    //Integracion de APPI
+    // Retrofit / API
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 }

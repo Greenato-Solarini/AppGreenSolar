@@ -1,8 +1,8 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProyectoRepository
+import com.greenatosolarini.myapplicationjetpackcompose.repository.ProyectoRepository
 
 class ProyectosViewModelFactory(
     private val repository: ProyectoRepository

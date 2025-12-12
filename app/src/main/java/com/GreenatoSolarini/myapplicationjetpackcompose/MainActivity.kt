@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose
+package com.greenatosolarini.myapplicationjetpackcompose
 
 
 import android.os.Bundle
@@ -13,17 +13,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.collectAsState
-import com.GreenatoSolarini.myapplicationjetpackcompose.data.local.DatabaseProvider
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.*
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes.*
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.cotizaciones.CotizacionScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.home.HomeScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.instaladores.InstaladoresScreen
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos.*
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos.*
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.instaladores.*
-import com.GreenatoSolarini.myapplicationjetpackcompose.ui.theme.MyApplicationJetpackComposeTheme
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.*
+import com.greenatosolarini.myapplicationjetpackcompose.data.local.DatabaseProvider
+import com.greenatosolarini.myapplicationjetpackcompose.repository.*
+import com.greenatosolarini.myapplicationjetpackcompose.ui.screens.clientes.*
+import com.greenatosolarini.myapplicationjetpackcompose.ui.screens.cotizaciones.CotizacionScreen
+import com.greenatosolarini.myapplicationjetpackcompose.ui.screens.home.HomeScreen
+import com.greenatosolarini.myapplicationjetpackcompose.ui.screens.instaladores.InstaladoresScreen
+import com.greenatosolarini.myapplicationjetpackcompose.ui.screens.productos.*
+import com.greenatosolarini.myapplicationjetpackcompose.ui.screens.proyectos.*
+import com.greenatosolarini.myapplicationjetpackcompose.ui.screens.instaladores.*
+import com.greenatosolarini.myapplicationjetpackcompose.ui.theme.MyApplicationJetpackComposeTheme
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.*
 
 class MainActivity : ComponentActivity() {
 
@@ -273,7 +273,7 @@ fun AppNavGraph(
         composable("proyectoEditar/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
             val proyecto = id?.let { proyectosViewModel.obtenerProyectoPorId(it) }
-
+x
             if (proyecto != null) {
                 EditarProyectoScreen(
                     proyecto = proyecto,

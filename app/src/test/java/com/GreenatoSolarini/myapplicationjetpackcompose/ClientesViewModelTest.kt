@@ -1,7 +1,7 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
-import com.GreenatoSolarini.myapplicationjetpackcompose.data.local.FakeClienteDao
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ClienteRepository
+import com.greenatosolarini.myapplicationjetpackcompose.data.local.FakeClienteDao
+import com.greenatosolarini.myapplicationjetpackcompose.repository.ClienteRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

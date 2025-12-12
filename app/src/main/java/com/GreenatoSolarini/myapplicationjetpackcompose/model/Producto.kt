@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.model
+package com.greenatosolarini.myapplicationjetpackcompose.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

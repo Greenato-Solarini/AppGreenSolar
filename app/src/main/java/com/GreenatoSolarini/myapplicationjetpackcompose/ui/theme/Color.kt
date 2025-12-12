@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.theme
+package com.greenatosolarini.myapplicationjetpackcompose.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

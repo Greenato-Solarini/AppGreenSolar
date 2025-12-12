@@ -1,7 +1,7 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.repository
+package com.greenatosolarini.myapplicationjetpackcompose.repository
 
-import com.GreenatoSolarini.myapplicationjetpackcompose.data.local.ClienteDao
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Cliente
+import com.greenatosolarini.myapplicationjetpackcompose.data.local.ClienteDao
+import com.greenatosolarini.myapplicationjetpackcompose.model.Cliente
 import kotlinx.coroutines.flow.Flow
 
 class ClienteRepository(
