@@ -1,10 +1,10 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Instalador
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.InstaladorRepository
+import com.greenatosolarini.myapplicationjetpackcompose.model.Instalador
+import com.greenatosolarini.myapplicationjetpackcompose.repository.InstaladorRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -51,7 +51,7 @@ class InstaladoresViewModel(
         }
     }
 
-    // Obtener instalador según ID
+    // Obtener instalador segÃºn ID
     fun obtenerInstaladorPorId(id: Int): Instalador? {
         return instaladores.value.firstOrNull { it.id == id }
     }
@@ -72,3 +72,4 @@ class InstaladoresViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+

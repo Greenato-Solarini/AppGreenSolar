@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.productos
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -19,8 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.model.Producto
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +63,7 @@ fun ProductoDetailScreen(
 
             if (producto.descripcion.isNotBlank()) {
                 Text(
-                    text = "Descripción:",
+                    text = "DescripciÃ³n:",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
@@ -72,7 +72,7 @@ fun ProductoDetailScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             } else {
-                Text("Sin descripción.")
+                Text("Sin descripciÃ³n.")
             }
 
             if (fotoProducto != null) {
@@ -92,3 +92,4 @@ fun ProductoDetailScreen(
         }
     }
 }
+

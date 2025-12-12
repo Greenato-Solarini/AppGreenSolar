@@ -1,8 +1,8 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProductoRepository
+import com.greenatosolarini.myapplicationjetpackcompose.repository.ProductoRepository
 
 class ProductosViewModelFactory(
     private val repository: ProductoRepository
@@ -16,3 +16,4 @@ class ProductosViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+

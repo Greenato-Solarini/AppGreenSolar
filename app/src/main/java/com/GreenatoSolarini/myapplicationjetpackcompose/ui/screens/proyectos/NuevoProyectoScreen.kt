@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.proyectos
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,12 +31,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Cliente
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Instalador
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.InstaladoresViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.model.Cliente
+import com.greenatosolarini.myapplicationjetpackcompose.model.Instalador
+import com.greenatosolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.InstaladoresViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,7 +52,7 @@ fun NuevoProyectoScreen(
     var nombreProyecto by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
     var comuna by remember { mutableStateOf("") }
-    var estado by remember { mutableStateOf("En evaluación") }
+    var estado by remember { mutableStateOf("En evaluaciÃ³n") }
 
     var clienteSeleccionado by remember { mutableStateOf<Cliente?>(null) }
     var instaladorSeleccionado by remember { mutableStateOf<Instalador?>(null) }
@@ -101,7 +101,7 @@ fun NuevoProyectoScreen(
             // ---- CLIENTE (OBLIGATORIO) ----
             if (clientes.isEmpty()) {
                 Text(
-                    text = "No hay clientes registrados. Primero crea un cliente en el módulo Clientes.",
+                    text = "No hay clientes registrados. Primero crea un cliente en el mÃ³dulo Clientes.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -114,7 +114,7 @@ fun NuevoProyectoScreen(
                         label = { Text("Cliente") },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { expandedCliente = true },   // 👈 AQUÍ EL CLICK
+                            .clickable { expandedCliente = true },   // ðŸ‘ˆ AQUÃ EL CLICK
                         isError = clienteError != null,
                         trailingIcon = {
                             Icon(
@@ -153,7 +153,7 @@ fun NuevoProyectoScreen(
             // ---- INSTALADOR (OBLIGATORIO) ----
             if (instaladores.isEmpty()) {
                 Text(
-                    text = "No hay instaladores registrados. Primero crea un instalador en el módulo Instaladores.",
+                    text = "No hay instaladores registrados. Primero crea un instalador en el mÃ³dulo Instaladores.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -166,7 +166,7 @@ fun NuevoProyectoScreen(
                         label = { Text("Instalador") },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { expandedInstalador = true },   // 👈 AQUÍ TAMBIÉN
+                            .clickable { expandedInstalador = true },   // ðŸ‘ˆ AQUÃ TAMBIÃ‰N
                         isError = instaladorError != null,
                         trailingIcon = {
                             Icon(
@@ -202,14 +202,14 @@ fun NuevoProyectoScreen(
                 }
             }
 
-            // ---- Dirección ----
+            // ---- DirecciÃ³n ----
             OutlinedTextField(
                 value = direccion,
                 onValueChange = {
                     direccion = it
                     showError = false
                 },
-                label = { Text("Dirección") },
+                label = { Text("DirecciÃ³n") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -228,13 +228,13 @@ fun NuevoProyectoScreen(
             OutlinedTextField(
                 value = estado,
                 onValueChange = { estado = it },
-                label = { Text("Estado (En evaluación / En instalación / Operativo)") },
+                label = { Text("Estado (En evaluaciÃ³n / En instalaciÃ³n / Operativo)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             if (showError) {
                 Text(
-                    text = "Completa nombre, cliente, instalador, dirección y comuna.",
+                    text = "Completa nombre, cliente, instalador, direcciÃ³n y comuna.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -271,7 +271,7 @@ fun NuevoProyectoScreen(
                             clienteId = clienteSeleccionado!!.id,
                             direccion = direccion,
                             comuna = comuna,
-                            estado = estado.ifBlank { "En evaluación" },
+                            estado = estado.ifBlank { "En evaluaciÃ³n" },
                             produccionActualW = 0,
                             consumoActualW = 0,
                             ahorroHoyClp = 0,
@@ -298,3 +298,4 @@ fun NuevoProyectoScreen(
         }
     }
 }
+

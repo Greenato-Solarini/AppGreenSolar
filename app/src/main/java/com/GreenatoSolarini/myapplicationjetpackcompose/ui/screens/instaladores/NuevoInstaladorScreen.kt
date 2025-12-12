@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.instaladores
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.instaladores
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.InstaladoresViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.InstaladoresViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,13 +84,13 @@ fun NuevoInstaladorScreen(
             OutlinedTextField(
                 value = telefono,
                 onValueChange = {
-                    // sólo dígitos
+                    // sÃ³lo dÃ­gitos
                     if (it.all { c -> c.isDigit() }) {
                         telefono = it
                         telefonoError = null
                     }
                 },
-                label = { Text("Teléfono (9 dígitos)") },
+                label = { Text("TelÃ©fono (9 dÃ­gitos)") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = telefonoError != null
             )
@@ -116,12 +116,12 @@ fun NuevoInstaladorScreen(
                     var hayError = false
 
                     if (nombre.isBlank()) {
-                        nombreError = "El nombre no puede estar vacío."
+                        nombreError = "El nombre no puede estar vacÃ­o."
                         hayError = true
                     }
 
                     if (telefono.length != 9) {
-                        telefonoError = "El teléfono debe tener 9 dígitos."
+                        telefonoError = "El telÃ©fono debe tener 9 dÃ­gitos."
                         hayError = true
                     }
 
@@ -148,3 +148,4 @@ fun NuevoInstaladorScreen(
         }
     }
 }
+

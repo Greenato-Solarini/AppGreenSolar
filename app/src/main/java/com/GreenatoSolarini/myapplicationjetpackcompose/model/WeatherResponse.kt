@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.model
+﻿package com.greenatosolarini.myapplicationjetpackcompose.model
 
 data class WeatherResponse(
     val current: CurrentWeather,

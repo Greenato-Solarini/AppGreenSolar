@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import com.greenatosolarini.myapplicationjetpackcompose.data.local.FakeClienteDao
 import com.greenatosolarini.myapplicationjetpackcompose.repository.ClienteRepository
@@ -20,17 +20,17 @@ class ClientesViewModelTest {
     }
 
     @Test
-    fun `nombre vacío no es válido`() {
+    fun `nombre vacÃ­o no es vÃ¡lido`() {
         assertFalse(viewModel.esNombreValido(""))
     }
 
     @Test
-    fun `nombre con un caracter no es válido`() {
+    fun `nombre con un caracter no es vÃ¡lido`() {
         assertFalse(viewModel.esNombreValido("A"))
     }
 
     @Test
-    fun `nombre válido devuelve true`() {
+    fun `nombre vÃ¡lido devuelve true`() {
         assertTrue(viewModel.esNombreValido("Pablo"))
     }
 }

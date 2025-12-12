@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.model
+﻿package com.greenatosolarini.myapplicationjetpackcompose.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -13,7 +13,7 @@ data class ProyectoSolar(
     val direccion: String,
     val comuna: String,
 
-    // 👇 Instalador debe estar AQUÍ (antes de estado)
+    // ðŸ‘‡ Instalador debe estar AQUÃ (antes de estado)
     val instaladorId: Int? = null,
 
     val estado: String,
@@ -24,3 +24,4 @@ data class ProyectoSolar(
 
     val foto: ByteArray? = null
 )
+

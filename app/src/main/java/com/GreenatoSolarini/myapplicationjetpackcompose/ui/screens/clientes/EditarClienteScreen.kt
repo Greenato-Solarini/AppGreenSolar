@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.clientes
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.clientes
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -96,7 +96,7 @@ fun EditarClienteScreen(
                     telefono = it
                     telefonoError = null
                 },
-                label = { Text("Teléfono") },
+                label = { Text("TelÃ©fono") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = telefonoError != null
             )
@@ -107,7 +107,7 @@ fun EditarClienteScreen(
             OutlinedTextField(
                 value = direccion,
                 onValueChange = { direccion = it },
-                label = { Text("Dirección") },
+                label = { Text("DirecciÃ³n") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -135,12 +135,12 @@ fun EditarClienteScreen(
                     }
 
                     if (!esEmailValido(email)) {
-                        emailError = "Ingresa un email válido."
+                        emailError = "Ingresa un email vÃ¡lido."
                         hayError = true
                     }
 
                     if (!esTelefonoValido(telefono)) {
-                        telefonoError = "El teléfono debe tener exactamente 9 dígitos numéricos."
+                        telefonoError = "El telÃ©fono debe tener exactamente 9 dÃ­gitos numÃ©ricos."
                         hayError = true
                     }
 
@@ -176,3 +176,4 @@ fun EditarClienteScreen(
         }
     }
 }
+

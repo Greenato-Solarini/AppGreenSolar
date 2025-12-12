@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.model
+﻿package com.greenatosolarini.myapplicationjetpackcompose.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,3 +12,4 @@ data class Producto(
     // Nueva columna para la foto
     val foto: ByteArray? = null
 )
+

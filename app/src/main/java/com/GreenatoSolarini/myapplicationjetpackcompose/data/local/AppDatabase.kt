@@ -1,13 +1,13 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.data.local
+﻿package com.greenatosolarini.myapplicationjetpackcompose.data.local
 
 import android.content.Context
 import androidx.room.Room
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Cliente
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Instalador
+import com.greenatosolarini.myapplicationjetpackcompose.model.Producto
+import com.greenatosolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.greenatosolarini.myapplicationjetpackcompose.model.Cliente
+import com.greenatosolarini.myapplicationjetpackcompose.model.Instalador
 
 @Database(
     entities = [
@@ -16,7 +16,7 @@ import com.GreenatoSolarini.myapplicationjetpackcompose.model.Instalador
         Cliente::class,
         Instalador::class
     ],
-    version = 8,                   // SUBE 1 LA VERSIÓN EN CADA CAMBIO DE APPDB(antes 7)
+    version = 8,                   // SUBE 1 LA VERSIÃ“N EN CADA CAMBIO DE APPDB(antes 7)
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -44,3 +44,4 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 }
+

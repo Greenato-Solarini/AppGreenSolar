@@ -1,11 +1,11 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.data.local
+﻿package com.greenatosolarini.myapplicationjetpackcompose.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Cliente
+import com.greenatosolarini.myapplicationjetpackcompose.model.Cliente
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -28,3 +28,4 @@ interface ClienteDao {
 
 
 }
+

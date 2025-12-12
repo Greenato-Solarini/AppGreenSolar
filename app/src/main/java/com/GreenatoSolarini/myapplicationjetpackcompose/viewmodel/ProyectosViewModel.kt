@@ -1,11 +1,11 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProyectoRepository
+import com.greenatosolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.greenatosolarini.myapplicationjetpackcompose.repository.ProyectoRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -45,7 +45,7 @@ class ProyectosViewModel(
         return proyectos.value.firstOrNull { it.id == id }
     }
 
-    // ---------- FOTO (CÁMARA / GALERÍA) ----------
+    // ---------- FOTO (CÃMARA / GALERÃA) ----------
 
     fun guardarFotoProyecto(proyectoId: Int, bitmap: Bitmap) {
         viewModelScope.launch {
@@ -70,3 +70,4 @@ class ProyectosViewModel(
         return stream.toByteArray()
     }
 }
+

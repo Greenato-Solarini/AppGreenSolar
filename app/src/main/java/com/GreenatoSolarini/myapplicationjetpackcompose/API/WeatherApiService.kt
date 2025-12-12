@@ -1,6 +1,6 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.api
+﻿package com.greenatosolarini.myapplicationjetpackcompose.api
 
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.WeatherResponse
+import com.greenatosolarini.myapplicationjetpackcompose.model.WeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.ui.theme
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -21,3 +21,4 @@ val YellowEnergy = Color(0xFFFDD835)
 val GrayLight = Color(0xFFF5F5F5) // gris muy suave y neutro
 
 val White = Color(0xFFFFFFFF)
+

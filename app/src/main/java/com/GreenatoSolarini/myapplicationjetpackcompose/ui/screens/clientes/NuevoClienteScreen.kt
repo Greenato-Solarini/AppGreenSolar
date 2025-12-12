@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.clientes
 
 import android.util.Patterns
 import androidx.compose.foundation.layout.*
@@ -8,7 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
 
 fun esEmailValido(email: String): Boolean {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -90,7 +90,7 @@ fun NuevoClienteScreen(
                     telefono = it
                     telefonoError = null
                 },
-                label = { Text("Teléfono") },
+                label = { Text("TelÃ©fono") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = telefonoError != null
             )
@@ -101,7 +101,7 @@ fun NuevoClienteScreen(
             OutlinedTextField(
                 value = direccion,
                 onValueChange = { direccion = it },
-                label = { Text("Dirección") },
+                label = { Text("DirecciÃ³n") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -129,12 +129,12 @@ fun NuevoClienteScreen(
                     }
 
                     if (!esEmailValido(email)) {
-                        emailError = "Ingresa un email válido."
+                        emailError = "Ingresa un email vÃ¡lido."
                         hayError = true
                     }
 
                     if (!esTelefonoValido(telefono)) {
-                        telefonoError = "El teléfono debe tener exactamente 9 dígitos numéricos."
+                        telefonoError = "El telÃ©fono debe tener exactamente 9 dÃ­gitos numÃ©ricos."
                         hayError = true
                     }
 
@@ -169,3 +169,4 @@ fun NuevoClienteScreen(
         }
     }
 }
+

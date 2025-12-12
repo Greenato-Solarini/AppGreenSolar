@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.instaladores
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.instaladores
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -91,7 +91,7 @@ fun EditarInstaladorScreen(
                         telefonoError = null
                     }
                 },
-                label = { Text("Teléfono (9 dígitos)") },
+                label = { Text("TelÃ©fono (9 dÃ­gitos)") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = telefonoError != null
             )
@@ -117,12 +117,12 @@ fun EditarInstaladorScreen(
                     var hayError = false
 
                     if (nombre.isBlank()) {
-                        nombreError = "El nombre no puede estar vacío."
+                        nombreError = "El nombre no puede estar vacÃ­o."
                         hayError = true
                     }
 
                     if (telefono.length != 9) {
-                        telefonoError = "El teléfono debe tener 9 dígitos."
+                        telefonoError = "El telÃ©fono debe tener 9 dÃ­gitos."
                         hayError = true
                     }
 
@@ -150,3 +150,4 @@ fun EditarInstaladorScreen(
         }
     }
 }
+

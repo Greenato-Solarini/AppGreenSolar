@@ -1,11 +1,11 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.data.local
+﻿package com.greenatosolarini.myapplicationjetpackcompose.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
+import com.greenatosolarini.myapplicationjetpackcompose.model.Producto
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,3 +26,4 @@ interface ProductoDao {
     @Delete
     suspend fun delete(producto: Producto)
 }
+

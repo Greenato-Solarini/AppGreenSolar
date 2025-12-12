@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.clientes
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.clientes
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Cliente
+import com.greenatosolarini.myapplicationjetpackcompose.model.Cliente
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,14 +62,14 @@ fun ClienteDetailScreen(
 
             if (cliente.telefono.isNotBlank()) {
                 Text(
-                    text = "Teléfono: ${cliente.telefono}",
+                    text = "TelÃ©fono: ${cliente.telefono}",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
             if (cliente.direccion.isNotBlank()) {
                 Text(
-                    text = "Dirección: ${cliente.direccion}",
+                    text = "DirecciÃ³n: ${cliente.direccion}",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -80,10 +80,11 @@ fun ClienteDetailScreen(
                 cliente.direccion.isBlank()
             ) {
                 Text(
-                    text = "Este cliente no tiene más datos registrados.",
+                    text = "Este cliente no tiene mÃ¡s datos registrados.",
                     style = MaterialTheme.typography.bodySmall
                 )
             }
         }
     }
 }
+

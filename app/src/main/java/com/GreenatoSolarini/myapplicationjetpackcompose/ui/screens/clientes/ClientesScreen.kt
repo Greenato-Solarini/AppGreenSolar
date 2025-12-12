@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.clientes
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.clientes
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -79,7 +79,7 @@ fun ClientesScreen(
                         .weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No hay clientes registrados todavía.")
+                    Text("No hay clientes registrados todavÃ­a.")
                 }
             } else {
                 LazyColumn(
@@ -129,8 +129,8 @@ fun ClienteItem(
                 style = MaterialTheme.typography.titleMedium
             )
             Text(text = "Email: ${cliente.email}")
-            Text(text = "Teléfono: ${cliente.telefono}")
-            Text(text = "Dirección: ${cliente.direccion}")
+            Text(text = "TelÃ©fono: ${cliente.telefono}")
+            Text(text = "DirecciÃ³n: ${cliente.direccion}")
             Text(text = "Comuna: ${cliente.comuna}")
 
             Row(
@@ -155,3 +155,4 @@ fun ClienteItem(
         }
     }
 }
+

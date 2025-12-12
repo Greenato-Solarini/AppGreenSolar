@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.productos
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.productos
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -55,19 +55,19 @@ fun AddProductScreen(
             OutlinedTextField(
                 value = descripcion,
                 onValueChange = { descripcion = it },
-                label = { Text("Descripción (opcional)") },
+                label = { Text("DescripciÃ³n (opcional)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             if (showError) {
                 Text(
-                    text = "Revisa el nombre y el precio (debe ser un número mayor a 0).",
+                    text = "Revisa el nombre y el precio (debe ser un nÃºmero mayor a 0).",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
 
-            // Botón GUARDAR
+            // BotÃ³n GUARDAR
             Button(
                 onClick = {
                     val precio = precioText.toIntOrNull()
@@ -87,7 +87,7 @@ fun AddProductScreen(
                 Text("Guardar producto")
             }
 
-            // Botón CANCELAR
+            // BotÃ³n CANCELAR
             OutlinedButton(
                 onClick = { onBack() },
                 modifier = Modifier.fillMaxWidth()
@@ -97,3 +97,4 @@ fun AddProductScreen(
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.productos
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.productos
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -33,8 +33,8 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.model.Producto
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ProductosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +57,7 @@ fun EditarProductoScreen(
     }
     var permisoDenegado by remember { mutableStateOf(false) }
 
-    // Cámara
+    // CÃ¡mara
     val takePictureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
@@ -67,7 +67,7 @@ fun EditarProductoScreen(
         }
     }
 
-    // Permiso cámara
+    // Permiso cÃ¡mara
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -79,7 +79,7 @@ fun EditarProductoScreen(
         }
     }
 
-    // Galería
+    // GalerÃ­a
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
@@ -170,13 +170,13 @@ fun EditarProductoScreen(
             OutlinedTextField(
                 value = descripcion,
                 onValueChange = { descripcion = it },
-                label = { Text("Descripción (opcional)") },
+                label = { Text("DescripciÃ³n (opcional)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             if (showError) {
                 Text(
-                    text = "Revisa el nombre y el precio (debe ser un número mayor a 0).",
+                    text = "Revisa el nombre y el precio (debe ser un nÃºmero mayor a 0).",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -187,19 +187,19 @@ fun EditarProductoScreen(
                 onClick = { manejarClickCamara() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Tomar foto del producto (Cámara)")
+                Text("Tomar foto del producto (CÃ¡mara)")
             }
 
             Button(
                 onClick = { manejarClickGaleria() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Elegir foto desde galería")
+                Text("Elegir foto desde galerÃ­a")
             }
 
             if (permisoDenegado) {
                 Text(
-                    text = "Permiso de cámara denegado. Actívalo en ajustes para usar esta función.",
+                    text = "Permiso de cÃ¡mara denegado. ActÃ­valo en ajustes para usar esta funciÃ³n.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -250,3 +250,4 @@ fun EditarProductoScreen(
         }
     }
 }
+

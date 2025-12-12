@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,3 +16,4 @@ class ProyectosViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 }
+

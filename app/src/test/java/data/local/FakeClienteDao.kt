@@ -1,6 +1,6 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.data.local
+package com.greenatosolarini.myapplicationjetpackcompose.data.local
 
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Cliente
+import com.greenatosolarini.myapplicationjetpackcompose.model.Cliente
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

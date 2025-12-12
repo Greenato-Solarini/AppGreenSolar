@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +44,7 @@ class CotizacionViewModel : ViewModel() {
 
         val consumo = consumoMensualText.toDoubleOrNull()
         if (consumo == null || consumo <= 0) {
-            consumoError = "Ingresa un consumo mensual válido (en kWh)"
+            consumoError = "Ingresa un consumo mensual vÃ¡lido (en kWh)"
             hayError = true
         }
 
@@ -58,9 +58,9 @@ class CotizacionViewModel : ViewModel() {
             return
         }
 
-        // --- Lógica simple de cálculo (puedes explicarla en la defensa) ---
+        // --- LÃ³gica simple de cÃ¡lculo (puedes explicarla en la defensa) ---
 
-        // Asumimos un factor de producción: 1 kW instalado ≈ 140 kWh/mes (depende zona)
+        // Asumimos un factor de producciÃ³n: 1 kW instalado â‰ˆ 140 kWh/mes (depende zona)
         val kwNecesarios = consumo / 140.0
 
         // Paneles de 550W (~0.55kW)
@@ -68,7 +68,7 @@ class CotizacionViewModel : ViewModel() {
 
         // Costo estimado por panel
         val costoPorPanel = 185_000
-        var inversion = paneles * costoPorPanel + 500_000  // inversor + instalación base
+        var inversion = paneles * costoPorPanel + 500_000  // inversor + instalaciÃ³n base
 
         if (incluirBaterias) {
             inversion += 1_500_000
@@ -91,3 +91,4 @@ class CotizacionViewModel : ViewModel() {
         metrosTechoError = null
     }
 }
+

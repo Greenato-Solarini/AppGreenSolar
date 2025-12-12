@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.ui.theme
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -69,8 +69,9 @@ fun MyApplicationJetpackComposeTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,  // 👈 antes tenías "colors"
+        colorScheme = colorScheme,  // ðŸ‘ˆ antes tenÃ­as "colors"
         typography = Typography,
         content = content
     )
 }
+

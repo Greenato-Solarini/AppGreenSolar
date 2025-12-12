@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.repository
+﻿package com.greenatosolarini.myapplicationjetpackcompose.repository
 
 import com.greenatosolarini.myapplicationjetpackcompose.data.local.ClienteDao
 import com.greenatosolarini.myapplicationjetpackcompose.model.Cliente
@@ -26,3 +26,4 @@ class ClienteRepository(
         return dao.getById(id)
     }
 }
+

@@ -1,7 +1,7 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.repository
+﻿package com.greenatosolarini.myapplicationjetpackcompose.repository
 
-import com.GreenatoSolarini.myapplicationjetpackcompose.data.local.InstaladorDao
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Instalador
+import com.greenatosolarini.myapplicationjetpackcompose.data.local.InstaladorDao
+import com.greenatosolarini.myapplicationjetpackcompose.model.Instalador
 import kotlinx.coroutines.flow.Flow
 
 class InstaladorRepository(
@@ -24,3 +24,4 @@ class InstaladorRepository(
 
     suspend fun obtenerPorId(id: Int): Instalador? = dao.getById(id)
 }
+

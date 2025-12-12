@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.proyectos
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -20,15 +20,15 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProyectoDetailScreen(
     proyecto: ProyectoSolar,
     clienteNombre: String,
-    instaladorNombre: String,        // ← nuevo parámetro
+    instaladorNombre: String,        // â† nuevo parÃ¡metro
     viewModel: ProyectosViewModel,
     onBack: () -> Unit
 ) {
@@ -40,7 +40,7 @@ fun ProyectoDetailScreen(
     }
     var permisoDenegado by remember { mutableStateOf(false) }
 
-    // Launcher para cámara
+    // Launcher para cÃ¡mara
     val takePictureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
@@ -50,7 +50,7 @@ fun ProyectoDetailScreen(
         }
     }
 
-    // Launcher para pedir permiso de cámara
+    // Launcher para pedir permiso de cÃ¡mara
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -62,7 +62,7 @@ fun ProyectoDetailScreen(
         }
     }
 
-    // Launcher para galería
+    // Launcher para galerÃ­a
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
@@ -142,7 +142,7 @@ fun ProyectoDetailScreen(
                 ) {
                     Text("Cliente: $clienteNombre", style = MaterialTheme.typography.bodyLarge)
                     Text("Instalador: $instaladorNombre", style = MaterialTheme.typography.bodyMedium)
-                    Text("Dirección: ${proyecto.direccion}", style = MaterialTheme.typography.bodyMedium)
+                    Text("DirecciÃ³n: ${proyecto.direccion}", style = MaterialTheme.typography.bodyMedium)
                     Text("Comuna: ${proyecto.comuna}", style = MaterialTheme.typography.bodyMedium)
                     Text("Estado: ${proyecto.estado}", style = MaterialTheme.typography.bodyMedium)
                 }
@@ -166,7 +166,7 @@ fun ProyectoDetailScreen(
                         text = "Monitoreo de consumo",
                         style = MaterialTheme.typography.titleMedium
                     )
-                    Text("Producción actual: ${proyecto.produccionActualW} W")
+                    Text("ProducciÃ³n actual: ${proyecto.produccionActualW} W")
                     Text("Consumo actual: ${proyecto.consumoActualW} W")
                     Text("Ahorro estimado hoy: ${proyecto.ahorroHoyClp} CLP")
                 }
@@ -177,19 +177,19 @@ fun ProyectoDetailScreen(
                 onClick = { manejarClickCamara() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Tomar foto del proyecto (Cámara)")
+                Text("Tomar foto del proyecto (CÃ¡mara)")
             }
 
             Button(
                 onClick = { manejarClickGaleria() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Elegir foto desde galería")
+                Text("Elegir foto desde galerÃ­a")
             }
 
             if (permisoDenegado) {
                 Text(
-                    text = "Permiso de cámara denegado. Actívalo en ajustes para usar esta función.",
+                    text = "Permiso de cÃ¡mara denegado. ActÃ­valo en ajustes para usar esta funciÃ³n.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -211,3 +211,4 @@ fun ProyectoDetailScreen(
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.data.local
+﻿package com.greenatosolarini.myapplicationjetpackcompose.data.local
 
 import android.content.Context
 import androidx.room.Room
@@ -21,3 +21,4 @@ object DatabaseProvider {
         }
     }
 }
+

@@ -1,7 +1,7 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.repository
+﻿package com.greenatosolarini.myapplicationjetpackcompose.repository
 
-import com.GreenatoSolarini.myapplicationjetpackcompose.data.local.ProyectoDao
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.greenatosolarini.myapplicationjetpackcompose.data.local.ProyectoDao
+import com.greenatosolarini.myapplicationjetpackcompose.model.ProyectoSolar
 import kotlinx.coroutines.flow.Flow
 
 class ProyectoRepository(
@@ -26,3 +26,4 @@ class ProyectoRepository(
         return dao.getById(id)
     }
 }
+

@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.proyectos
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -7,8 +7,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +19,7 @@ fun EditarProyectoScreen(
 ) {
     var nombreProyecto by remember { mutableStateOf(proyecto.nombre) }
     var direccion by remember { mutableStateOf(proyecto.direccion) }
-    var comuna by remember { mutableStateOf(proyecto.comuna) }   // 👈 NUEVO
+    var comuna by remember { mutableStateOf(proyecto.comuna) }   // ðŸ‘ˆ NUEVO
     var estado by remember { mutableStateOf(proyecto.estado) }
 
     var produccionText by remember { mutableStateOf(proyecto.produccionActualW.toString()) }
@@ -67,7 +67,7 @@ fun EditarProyectoScreen(
                     direccion = it
                     showError = false
                 },
-                label = { Text("Dirección") },
+                label = { Text("DirecciÃ³n") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -84,14 +84,14 @@ fun EditarProyectoScreen(
             OutlinedTextField(
                 value = estado,
                 onValueChange = { estado = it },
-                label = { Text("Estado (En evaluación / En instalación / Operativo)") },
+                label = { Text("Estado (En evaluaciÃ³n / En instalaciÃ³n / Operativo)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = produccionText,
                 onValueChange = { produccionText = it },
-                label = { Text("Producción actual (W)") },
+                label = { Text("ProducciÃ³n actual (W)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -111,7 +111,7 @@ fun EditarProyectoScreen(
 
             if (showError) {
                 Text(
-                    text = "Nombre, dirección y comuna no pueden estar vacíos.",
+                    text = "Nombre, direcciÃ³n y comuna no pueden estar vacÃ­os.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -131,7 +131,7 @@ fun EditarProyectoScreen(
                         val proyectoActualizado = proyecto.copy(
                             nombre = nombreProyecto,
                             direccion = direccion,
-                            comuna = comuna,                       // 👈 NUEVO
+                            comuna = comuna,                       // ðŸ‘ˆ NUEVO
                             estado = estado.ifBlank { proyecto.estado },
                             produccionActualW = produccion,
                             consumoActualW = consumo,
@@ -156,3 +156,4 @@ fun EditarProyectoScreen(
         }
     }
 }
+

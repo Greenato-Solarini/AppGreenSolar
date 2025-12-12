@@ -1,8 +1,8 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ClienteRepository
+import com.greenatosolarini.myapplicationjetpackcompose.repository.ClienteRepository
 
 class ClientesViewModelFactory(
     private val repository: ClienteRepository
@@ -16,3 +16,4 @@ class ClientesViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+

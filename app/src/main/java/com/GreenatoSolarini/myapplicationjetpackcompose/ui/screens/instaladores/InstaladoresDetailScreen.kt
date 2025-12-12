@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.instaladores
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.instaladores
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -68,7 +68,7 @@ fun InstaladorDetailScreen(
                 ) {
                     Text("Nombre: ${instalador.nombre}", style = MaterialTheme.typography.titleMedium)
                     if (instalador.telefono.isNotBlank()) {
-                        Text("Teléfono: ${instalador.telefono}")
+                        Text("TelÃ©fono: ${instalador.telefono}")
                     }
                     if (instalador.email.isNotBlank()) {
                         Text("Email: ${instalador.email}")
@@ -109,7 +109,7 @@ fun InstaladorDetailScreen(
                                 verticalArrangement = Arrangement.spacedBy(2.dp)
                             ) {
                                 Text(proyecto.nombre, style = MaterialTheme.typography.titleMedium)
-                                Text("Dirección: ${proyecto.direccion}")
+                                Text("DirecciÃ³n: ${proyecto.direccion}")
                                 Text("Comuna: ${proyecto.comuna}")
                                 Text("Estado: ${proyecto.estado}")
                             }
@@ -120,3 +120,4 @@ fun InstaladorDetailScreen(
         }
     }
 }
+

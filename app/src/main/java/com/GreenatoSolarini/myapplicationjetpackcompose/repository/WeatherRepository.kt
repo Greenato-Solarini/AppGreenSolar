@@ -1,7 +1,7 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.repository
+﻿package com.greenatosolarini.myapplicationjetpackcompose.repository
 
-import com.GreenatoSolarini.myapplicationjetpackcompose.api.WeatherApiService
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.WeatherResponse
+import com.greenatosolarini.myapplicationjetpackcompose.api.WeatherApiService
+import com.greenatosolarini.myapplicationjetpackcompose.model.WeatherResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

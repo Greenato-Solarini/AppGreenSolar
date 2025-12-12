@@ -1,4 +1,4 @@
-package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.home
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -95,9 +95,9 @@ fun HomeScreen(
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        Text("🌤️ Clima para paneles solares", style = MaterialTheme.typography.titleMedium)
-                        Text("Temperatura: ${String.format("%.1f", current.temperature_2m)} °C")
-                        Text("Radiación solar: ${String.format("%.1f", radiation)} W/m²")
+                        Text("ðŸŒ¤ï¸ Clima para paneles solares", style = MaterialTheme.typography.titleMedium)
+                        Text("Temperatura: ${String.format("%.1f", current.temperature_2m)} Â°C")
+                        Text("RadiaciÃ³n solar: ${String.format("%.1f", radiation)} W/mÂ²")
                         Text("Viento: ${String.format("%.1f", current.wind_speed_10m)} km/h")
                     }
                 }
@@ -110,7 +110,7 @@ fun HomeScreen(
                     )
                 ) {
                     Text(
-                        text = "⚠️ No se pudo cargar el clima",
+                        text = "âš ï¸ No se pudo cargar el clima",
                         modifier = Modifier.padding(12.dp),
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -118,7 +118,7 @@ fun HomeScreen(
             }
             //  Fin de tarjeta de clima
 
-            // ---------- MENÚ PRINCIPAL ----------
+            // ---------- MENÃš PRINCIPAL ----------
             HomeOptionCard(
                 title = "Clientes",
                 icon = Icons.Default.Person,
@@ -144,7 +144,7 @@ fun HomeScreen(
             )
 
             HomeOptionCard(
-                title = "Cotización",
+                title = "CotizaciÃ³n",
                 icon = Icons.Default.Star,
                 onClick = onNavigateToCotizacion
             )

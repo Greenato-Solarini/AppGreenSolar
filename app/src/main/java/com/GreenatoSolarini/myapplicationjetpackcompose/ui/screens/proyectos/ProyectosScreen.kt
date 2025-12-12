@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.proyectos
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.proyectos
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,17 +25,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.ProyectoSolar
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.InstaladoresViewModel   // 👈 IMPORT IMPORTANTE
+import com.greenatosolarini.myapplicationjetpackcompose.model.ProyectoSolar
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ClientesViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.ProyectosViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.InstaladoresViewModel   // ðŸ‘ˆ IMPORT IMPORTANTE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProyectosScreen(
     viewModel: ProyectosViewModel,
     clientesViewModel: ClientesViewModel,
-    instaladoresViewModel: InstaladoresViewModel,   // 👈 NUEVO
+    instaladoresViewModel: InstaladoresViewModel,   // ðŸ‘ˆ NUEVO
     onProyectoClick: (Int) -> Unit,
     onProyectoEdit: (Int) -> Unit,
     onProyectoDelete: (Int) -> Unit,
@@ -44,7 +44,7 @@ fun ProyectosScreen(
 ) {
     val proyectos by viewModel.proyectos.collectAsState()
     val clientes by clientesViewModel.clientes.collectAsState()
-    val instaladores by instaladoresViewModel.instaladores.collectAsState()  // 👈 AQUÍ VA LA LÍNEA CORRECTA
+    val instaladores by instaladoresViewModel.instaladores.collectAsState()  // ðŸ‘ˆ AQUÃ VA LA LÃNEA CORRECTA
 
     Scaffold(
         topBar = {
@@ -86,7 +86,7 @@ fun ProyectosScreen(
                         .weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No hay proyectos registrados todavía.")
+                    Text("No hay proyectos registrados todavÃ­a.")
                 }
             } else {
                 LazyColumn(
@@ -106,7 +106,7 @@ fun ProyectosScreen(
                         ProyectoItem(
                             proyecto = proyecto,
                             clienteNombre = clienteNombre,
-                            instaladorNombre = instaladorNombre,   // 👈 PASAMOS NOMBRE
+                            instaladorNombre = instaladorNombre,   // ðŸ‘ˆ PASAMOS NOMBRE
                             onClick = { onProyectoClick(proyecto.id) },
                             onEdit = { onProyectoEdit(proyecto.id) },
                             onDelete = { onProyectoDelete(proyecto.id) }
@@ -122,7 +122,7 @@ fun ProyectosScreen(
 fun ProyectoItem(
     proyecto: ProyectoSolar,
     clienteNombre: String,
-    instaladorNombre: String,          // 👈 NUEVO
+    instaladorNombre: String,          // ðŸ‘ˆ NUEVO
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
@@ -146,7 +146,7 @@ fun ProyectoItem(
             Text(text = proyecto.nombre, style = MaterialTheme.typography.titleMedium)
             Text(text = "Cliente: $clienteNombre")
             Text(text = "Instalador: $instaladorNombre")
-            Text(text = "Dirección: ${proyecto.direccion}")
+            Text(text = "DirecciÃ³n: ${proyecto.direccion}")
             Text(text = "Comuna: ${proyecto.comuna}")
             Text(text = "Estado: ${proyecto.estado}")
 
@@ -172,3 +172,4 @@ fun ProyectoItem(
         }
     }
 }
+

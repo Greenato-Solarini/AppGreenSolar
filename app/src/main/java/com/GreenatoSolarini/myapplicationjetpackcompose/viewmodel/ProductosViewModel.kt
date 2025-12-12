@@ -1,11 +1,11 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Producto
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ProductoRepository
+import com.greenatosolarini.myapplicationjetpackcompose.model.Producto
+import com.greenatosolarini.myapplicationjetpackcompose.repository.ProductoRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ class ProductosViewModel(
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
     }
 
-    // -------- CRUD básico --------
+    // -------- CRUD bÃ¡sico --------
     fun agregarProducto(nombre: String, precio: Int, descripcion: String) {
         viewModelScope.launch {
             repository.insertar(
@@ -78,3 +78,4 @@ class ProductosViewModel(
         return bytesToBitmap(bytes)
     }
 }
+

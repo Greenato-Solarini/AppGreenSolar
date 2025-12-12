@@ -1,9 +1,9 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel
+﻿package com.greenatosolarini.myapplicationjetpackcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.GreenatoSolarini.myapplicationjetpackcompose.model.Cliente
-import com.GreenatoSolarini.myapplicationjetpackcompose.repository.ClienteRepository
+import com.greenatosolarini.myapplicationjetpackcompose.model.Cliente
+import com.greenatosolarini.myapplicationjetpackcompose.repository.ClienteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,14 +14,14 @@ class ClientesViewModel(
     private val repository: ClienteRepository
 ) : ViewModel() {
 
-    // Exposición del estado de los clientes como StateFlow
+    // ExposiciÃ³n del estado de los clientes como StateFlow
     val clientes: StateFlow<List<Cliente>> = repository.clientes.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
     )
 
-    // -------- VALIDACIONES (públicas para pruebas) --------
+    // -------- VALIDACIONES (pÃºblicas para pruebas) --------
     fun esNombreValido(nombre: String): Boolean {
         return nombre.isNotBlank() && nombre.length >= 2
     }
@@ -47,7 +47,7 @@ class ClientesViewModel(
 
     /**
      * Intenta agregar un cliente tras validar los datos.
-     * @return true si los datos son válidos y se inicia la inserción, false si falla la validación.
+     * @return true si los datos son vÃ¡lidos y se inicia la inserciÃ³n, false si falla la validaciÃ³n.
      */
     fun agregarCliente(
         nombre: String,

@@ -1,4 +1,4 @@
-package com.GreenatoSolarini.myapplicationjetpackcompose.ui.screens.cotizaciones
+﻿package com.greenatosolarini.myapplicationjetpackcompose.ui.screens.cotizaciones
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -7,7 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.GreenatoSolarini.myapplicationjetpackcompose.viewmodel.CotizacionViewModel
+import com.greenatosolarini.myapplicationjetpackcompose.viewmodel.CotizacionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +40,7 @@ fun CotizacionScreen(
         ) {
 
             // ===========================
-            // 🔵 Consumo mensual
+            // ðŸ”µ Consumo mensual
             // ===========================
             OutlinedTextField(
                 value = viewModel.consumoMensualText,
@@ -61,7 +61,7 @@ fun CotizacionScreen(
             }
 
             // ===========================
-            // 🔵 Metros de techo
+            // ðŸ”µ Metros de techo
             // ===========================
             OutlinedTextField(
                 value = viewModel.metrosTechoText,
@@ -69,7 +69,7 @@ fun CotizacionScreen(
                     viewModel.metrosTechoText = it
                     viewModel.metrosTechoError = null
                 },
-                label = { Text("Superficie disponible en techo (m²)") },
+                label = { Text("Superficie disponible en techo (mÂ²)") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = viewModel.metrosTechoError != null
             )
@@ -82,18 +82,18 @@ fun CotizacionScreen(
             }
 
             // ===========================
-            // 🔵 Checkbox baterías
+            // ðŸ”µ Checkbox baterÃ­as
             // ===========================
             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                 Checkbox(
                     checked = viewModel.incluirBaterias,
                     onCheckedChange = { viewModel.incluirBaterias = it }
                 )
-                Text("Incluir baterías de respaldo")
+                Text("Incluir baterÃ­as de respaldo")
             }
 
             // ===========================
-            // 🔵 Botón calcular
+            // ðŸ”µ BotÃ³n calcular
             // ===========================
             Button(
                 onClick = { viewModel.onCalcular() },
@@ -103,7 +103,7 @@ fun CotizacionScreen(
             }
 
             // ===========================
-            // 🟢 Resultado
+            // ðŸŸ¢ Resultado
             // ===========================
             viewModel.resultado?.let { resultado ->
                 Card(
@@ -117,8 +117,8 @@ fun CotizacionScreen(
                     ) {
                         Text("Resultado", style = MaterialTheme.typography.titleMedium)
                         Text("Potencia recomendada: ${"%.1f".format(resultado.potenciaRecomendadaKw)} kW")
-                        Text("Número de paneles: ${resultado.numeroPaneles}")
-                        Text("Inversión estimada: ${resultado.inversionAproximada} CLP")
+                        Text("NÃºmero de paneles: ${resultado.numeroPaneles}")
+                        Text("InversiÃ³n estimada: ${resultado.inversionAproximada} CLP")
                         Text("Ahorro mensual estimado: ${resultado.ahorroMensualEstimado} CLP")
                     }
                 }
@@ -126,3 +126,4 @@ fun CotizacionScreen(
         }
     }
 }
+
