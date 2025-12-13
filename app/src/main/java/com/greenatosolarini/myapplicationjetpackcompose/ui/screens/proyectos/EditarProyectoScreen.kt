@@ -67,7 +67,7 @@ fun EditarProyectoScreen(
                     direccion = it
                     showError = false
                 },
-                label = { Text("DirecciÃ³n") },
+                label = { Text("Direccion") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -84,14 +84,14 @@ fun EditarProyectoScreen(
             OutlinedTextField(
                 value = estado,
                 onValueChange = { estado = it },
-                label = { Text("Estado (En evaluaciÃ³n / En instalaciÃ³n / Operativo)") },
+                label = { Text("Estado (En evaluacion / En instalacion / Operativo)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = produccionText,
                 onValueChange = { produccionText = it },
-                label = { Text("ProducciÃ³n actual (W)") },
+                label = { Text("Produccion actual (W)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -111,7 +111,7 @@ fun EditarProyectoScreen(
 
             if (showError) {
                 Text(
-                    text = "Nombre, direcciÃ³n y comuna no pueden estar vacÃ­os.",
+                    text = "Nombre, direccion y comuna no pueden estar vacios.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )

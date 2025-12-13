@@ -109,7 +109,7 @@ fun InstaladorDetailScreen(
                                 verticalArrangement = Arrangement.spacedBy(2.dp)
                             ) {
                                 Text(proyecto.nombre, style = MaterialTheme.typography.titleMedium)
-                                Text("DirecciÃ³n: ${proyecto.direccion}")
+                                Text("Direccion: ${proyecto.direccion}")
                                 Text("Comuna: ${proyecto.comuna}")
                                 Text("Estado: ${proyecto.estado}")
                             }

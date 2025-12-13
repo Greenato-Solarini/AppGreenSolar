@@ -72,7 +72,7 @@ fun ProductoDetailScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             } else {
-                Text("Sin descripciÃ³n.")
+                Text("Sin descripcion.")
             }
 
             if (fotoProducto != null) {

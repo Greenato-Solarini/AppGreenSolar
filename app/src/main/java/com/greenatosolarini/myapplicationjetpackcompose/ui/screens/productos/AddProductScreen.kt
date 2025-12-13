@@ -55,13 +55,13 @@ fun AddProductScreen(
             OutlinedTextField(
                 value = descripcion,
                 onValueChange = { descripcion = it },
-                label = { Text("DescripciÃ³n (opcional)") },
+                label = { Text("Descripcion (opcional)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             if (showError) {
                 Text(
-                    text = "Revisa el nombre y el precio (debe ser un nÃºmero mayor a 0).",
+                    text = "Revisa el nombre y el precio (debe ser un numero mayor a 0).",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )

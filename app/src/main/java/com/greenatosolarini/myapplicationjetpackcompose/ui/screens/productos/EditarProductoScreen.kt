@@ -170,13 +170,13 @@ fun EditarProductoScreen(
             OutlinedTextField(
                 value = descripcion,
                 onValueChange = { descripcion = it },
-                label = { Text("DescripciÃ³n (opcional)") },
+                label = { Text("Descripcion (opcional)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             if (showError) {
                 Text(
-                    text = "Revisa el nombre y el precio (debe ser un nÃºmero mayor a 0).",
+                    text = "Revisa el nombre y el precio (debe ser un numero mayor a 0).",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -187,19 +187,19 @@ fun EditarProductoScreen(
                 onClick = { manejarClickCamara() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Tomar foto del producto (CÃ¡mara)")
+                Text("Tomar foto del producto (Camara)")
             }
 
             Button(
                 onClick = { manejarClickGaleria() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Elegir foto desde galerÃ­a")
+                Text("Elegir foto desde galeria")
             }
 
             if (permisoDenegado) {
                 Text(
-                    text = "Permiso de cÃ¡mara denegado. ActÃ­valo en ajustes para usar esta funciÃ³n.",
+                    text = "Permiso de camara denegado. Activalo en ajustes para usar esta funcion.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )

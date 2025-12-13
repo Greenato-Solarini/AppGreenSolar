@@ -142,7 +142,7 @@ fun ProyectoDetailScreen(
                 ) {
                     Text("Cliente: $clienteNombre", style = MaterialTheme.typography.bodyLarge)
                     Text("Instalador: $instaladorNombre", style = MaterialTheme.typography.bodyMedium)
-                    Text("DirecciÃ³n: ${proyecto.direccion}", style = MaterialTheme.typography.bodyMedium)
+                    Text("Direccion: ${proyecto.direccion}", style = MaterialTheme.typography.bodyMedium)
                     Text("Comuna: ${proyecto.comuna}", style = MaterialTheme.typography.bodyMedium)
                     Text("Estado: ${proyecto.estado}", style = MaterialTheme.typography.bodyMedium)
                 }
@@ -166,7 +166,7 @@ fun ProyectoDetailScreen(
                         text = "Monitoreo de consumo",
                         style = MaterialTheme.typography.titleMedium
                     )
-                    Text("ProducciÃ³n actual: ${proyecto.produccionActualW} W")
+                    Text("Produccion actual: ${proyecto.produccionActualW} W")
                     Text("Consumo actual: ${proyecto.consumoActualW} W")
                     Text("Ahorro estimado hoy: ${proyecto.ahorroHoyClp} CLP")
                 }
@@ -177,19 +177,19 @@ fun ProyectoDetailScreen(
                 onClick = { manejarClickCamara() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Tomar foto del proyecto (CÃ¡mara)")
+                Text("Tomar foto del proyecto (Camara)")
             }
 
             Button(
                 onClick = { manejarClickGaleria() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Elegir foto desde galerÃ­a")
+                Text("Elegir foto desde galeria")
             }
 
             if (permisoDenegado) {
                 Text(
-                    text = "Permiso de cÃ¡mara denegado. ActÃ­valo en ajustes para usar esta funciÃ³n.",
+                    text = "Permiso de cÃ¡mara denegado. Activalo en ajustes para usar esta funcion.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )

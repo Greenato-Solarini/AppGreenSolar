@@ -69,7 +69,7 @@ fun CotizacionScreen(
                     viewModel.metrosTechoText = it
                     viewModel.metrosTechoError = null
                 },
-                label = { Text("Superficie disponible en techo (mÂ²)") },
+                label = { Text("Superficie disponible en techo (m²)") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = viewModel.metrosTechoError != null
             )
@@ -89,7 +89,7 @@ fun CotizacionScreen(
                     checked = viewModel.incluirBaterias,
                     onCheckedChange = { viewModel.incluirBaterias = it }
                 )
-                Text("Incluir baterÃ­as de respaldo")
+                Text("Incluir baterias de respaldo")
             }
 
             // ===========================
@@ -117,8 +117,8 @@ fun CotizacionScreen(
                     ) {
                         Text("Resultado", style = MaterialTheme.typography.titleMedium)
                         Text("Potencia recomendada: ${"%.1f".format(resultado.potenciaRecomendadaKw)} kW")
-                        Text("NÃºmero de paneles: ${resultado.numeroPaneles}")
-                        Text("InversiÃ³n estimada: ${resultado.inversionAproximada} CLP")
+                        Text("Numero de paneles: ${resultado.numeroPaneles}")
+                        Text("Inversion estimada: ${resultado.inversionAproximada} CLP")
                         Text("Ahorro mensual estimado: ${resultado.ahorroMensualEstimado} CLP")
                     }
                 }

@@ -79,7 +79,7 @@ fun ClientesScreen(
                         .weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No hay clientes registrados todavÃ­a.")
+                    Text("No hay clientes registrados todavia.")
                 }
             } else {
                 LazyColumn(
@@ -129,8 +129,8 @@ fun ClienteItem(
                 style = MaterialTheme.typography.titleMedium
             )
             Text(text = "Email: ${cliente.email}")
-            Text(text = "TelÃ©fono: ${cliente.telefono}")
-            Text(text = "DirecciÃ³n: ${cliente.direccion}")
+            Text(text = "Telefono: ${cliente.telefono}")
+            Text(text = "Direccion: ${cliente.direccion}")
             Text(text = "Comuna: ${cliente.comuna}")
 
             Row(

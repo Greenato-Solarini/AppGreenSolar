@@ -70,7 +70,7 @@ fun InstaladoresScreen(
                         .weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No hay instaladores registrados todavÃ­a.")
+                    Text("No hay instaladores registrados todavia.")
                 }
             } else {
                 LazyColumn(

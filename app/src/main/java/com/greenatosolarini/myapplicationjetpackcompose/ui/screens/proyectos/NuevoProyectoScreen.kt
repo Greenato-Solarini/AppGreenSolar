@@ -52,7 +52,7 @@ fun NuevoProyectoScreen(
     var nombreProyecto by remember { mutableStateOf("") }
     var direccion by remember { mutableStateOf("") }
     var comuna by remember { mutableStateOf("") }
-    var estado by remember { mutableStateOf("En evaluaciÃ³n") }
+    var estado by remember { mutableStateOf("En evaluacion") }
 
     var clienteSeleccionado by remember { mutableStateOf<Cliente?>(null) }
     var instaladorSeleccionado by remember { mutableStateOf<Instalador?>(null) }
@@ -101,7 +101,7 @@ fun NuevoProyectoScreen(
             // ---- CLIENTE (OBLIGATORIO) ----
             if (clientes.isEmpty()) {
                 Text(
-                    text = "No hay clientes registrados. Primero crea un cliente en el mÃ³dulo Clientes.",
+                    text = "No hay clientes registrados. Primero crea un cliente en el modulo Clientes.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -153,7 +153,7 @@ fun NuevoProyectoScreen(
             // ---- INSTALADOR (OBLIGATORIO) ----
             if (instaladores.isEmpty()) {
                 Text(
-                    text = "No hay instaladores registrados. Primero crea un instalador en el mÃ³dulo Instaladores.",
+                    text = "No hay instaladores registrados. Primero crea un instalador en el modulo Instaladores.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -209,7 +209,7 @@ fun NuevoProyectoScreen(
                     direccion = it
                     showError = false
                 },
-                label = { Text("DirecciÃ³n") },
+                label = { Text("Direccion") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -228,13 +228,13 @@ fun NuevoProyectoScreen(
             OutlinedTextField(
                 value = estado,
                 onValueChange = { estado = it },
-                label = { Text("Estado (En evaluaciÃ³n / En instalaciÃ³n / Operativo)") },
+                label = { Text("Estado (En evaluacion / En instalacion / Operativo)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             if (showError) {
                 Text(
-                    text = "Completa nombre, cliente, instalador, direcciÃ³n y comuna.",
+                    text = "Completa nombre, cliente, instalador, direccion y comuna.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -271,7 +271,7 @@ fun NuevoProyectoScreen(
                             clienteId = clienteSeleccionado!!.id,
                             direccion = direccion,
                             comuna = comuna,
-                            estado = estado.ifBlank { "En evaluaciÃ³n" },
+                            estado = estado.ifBlank { "En evaluacion" },
                             produccionActualW = 0,
                             consumoActualW = 0,
                             ahorroHoyClp = 0,

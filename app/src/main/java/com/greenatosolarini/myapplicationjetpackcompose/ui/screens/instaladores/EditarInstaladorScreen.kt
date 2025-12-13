@@ -91,7 +91,7 @@ fun EditarInstaladorScreen(
                         telefonoError = null
                     }
                 },
-                label = { Text("TelÃ©fono (9 dÃ­gitos)") },
+                label = { Text("Telefono (9 digitos)") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = telefonoError != null
             )
@@ -117,12 +117,12 @@ fun EditarInstaladorScreen(
                     var hayError = false
 
                     if (nombre.isBlank()) {
-                        nombreError = "El nombre no puede estar vacÃ­o."
+                        nombreError = "El nombre no puede estar vacio."
                         hayError = true
                     }
 
                     if (telefono.length != 9) {
-                        telefonoError = "El telÃ©fono debe tener 9 dÃ­gitos."
+                        telefonoError = "El telefono debe tener 9 digitos."
                         hayError = true
                     }
 

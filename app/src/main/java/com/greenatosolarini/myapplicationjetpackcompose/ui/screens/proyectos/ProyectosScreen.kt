@@ -86,7 +86,7 @@ fun ProyectosScreen(
                         .weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No hay proyectos registrados todavÃ­a.")
+                    Text("No hay proyectos registrados todavia.")
                 }
             } else {
                 LazyColumn(
@@ -146,7 +146,7 @@ fun ProyectoItem(
             Text(text = proyecto.nombre, style = MaterialTheme.typography.titleMedium)
             Text(text = "Cliente: $clienteNombre")
             Text(text = "Instalador: $instaladorNombre")
-            Text(text = "DirecciÃ³n: ${proyecto.direccion}")
+            Text(text = "Direccion: ${proyecto.direccion}")
             Text(text = "Comuna: ${proyecto.comuna}")
             Text(text = "Estado: ${proyecto.estado}")
 

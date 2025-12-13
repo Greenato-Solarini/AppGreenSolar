@@ -62,14 +62,14 @@ fun ClienteDetailScreen(
 
             if (cliente.telefono.isNotBlank()) {
                 Text(
-                    text = "TelÃ©fono: ${cliente.telefono}",
+                    text = "Telefono: ${cliente.telefono}",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
             if (cliente.direccion.isNotBlank()) {
                 Text(
-                    text = "DirecciÃ³n: ${cliente.direccion}",
+                    text = "Direccion: ${cliente.direccion}",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -80,7 +80,7 @@ fun ClienteDetailScreen(
                 cliente.direccion.isBlank()
             ) {
                 Text(
-                    text = "Este cliente no tiene mÃ¡s datos registrados.",
+                    text = "Este cliente no tiene mas datos registrados.",
                     style = MaterialTheme.typography.bodySmall
                 )
             }

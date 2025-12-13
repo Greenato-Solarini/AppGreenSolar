@@ -95,9 +95,9 @@ fun HomeScreen(
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        Text("ðŸŒ¤ï¸ Clima para paneles solares", style = MaterialTheme.typography.titleMedium)
-                        Text("Temperatura: ${String.format("%.1f", current.temperature_2m)} Â°C")
-                        Text("RadiaciÃ³n solar: ${String.format("%.1f", radiation)} W/mÂ²")
+                        Text("Clima para paneles solares", style = MaterialTheme.typography.titleMedium)
+                        Text("Temperatura: ${String.format("%.1f", current.temperature_2m)} °C")
+                        Text("Radiacion solar: ${String.format("%.1f", radiation)} W/m²")
                         Text("Viento: ${String.format("%.1f", current.wind_speed_10m)} km/h")
                     }
                 }
@@ -110,7 +110,7 @@ fun HomeScreen(
                     )
                 ) {
                     Text(
-                        text = "âš ï¸ No se pudo cargar el clima",
+                        text = "No se pudo cargar el clima",
                         modifier = Modifier.padding(12.dp),
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -144,7 +144,7 @@ fun HomeScreen(
             )
 
             HomeOptionCard(
-                title = "CotizaciÃ³n",
+                title = "Cotizacion",
                 icon = Icons.Default.Star,
                 onClick = onNavigateToCotizacion
             )

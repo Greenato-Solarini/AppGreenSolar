@@ -81,7 +81,7 @@ fun ProductosScreen(
                         .weight(1f),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No hay productos registrados todavÃ­a.")
+                    Text("No hay productos registrados todavia.")
                 }
             } else {
                 LazyColumn(
